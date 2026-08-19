@@ -138,7 +138,6 @@
     <div class="heatmap-foot">Less<div class="heatmap-foot-legend"><div class="heatmap-foot-cell" style="background:#ebedf0"></div><div class="heatmap-foot-cell heatmap-cell l1"></div><div class="heatmap-foot-cell heatmap-cell l2"></div><div class="heatmap-foot-cell heatmap-cell l3"></div><div class="heatmap-foot-cell heatmap-cell l4"></div></div>More</div>
   </div>
 </div>
-<footer>Made with IBM Bob</footer>
 <script>
 document.getElementById("gen-date").textContent = new Date().toLocaleDateString("en-US",{day:"numeric",month:"long",year:"numeric"});
 (function(){
@@ -189,12 +188,12 @@ allYears.forEach(y=>{yearlyTotals[y]={commits:0,added:0,removed:0};});
 repos.forEach(r=>Object.entries(DATA[r]).forEach(([y,d])=>{yearlyTotals[+y].commits+=d.commits;yearlyTotals[+y].added+=d.added;yearlyTotals[+y].removed+=d.removed;}));
 const ytbl=document.getElementById("yearly-table");
 let h=`<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>Repos Active</th></tr></thead><tbody>`;
-allYears.forEach(y=>{const d=yearlyTotals[y];if(!d.commits)return;const net=d.added-d.removed;const rc=repos.filter(r=>DATA[r][y]&&DATA[r][y].commits>0).length;h+=`<tr><td>${y}</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}"${fmt(net)}</td><td>${rc}</td></tr>`;});
-h+=`<tr class="total-row"><td>All Years</td><td>${fmt(gC)}</td><td class="green">${fmt(gA)}</td><td class="red">${fmt(gR)}</td><td class="${gA>=gR?'net-pos':'net-neg'}">${gA>=gR?"+":""}"${fmt(gA-gR)}</td><td>${activeRepos.length}</td></tr>`;
+allYears.forEach(y=>{const d=yearlyTotals[y];if(!d.commits)return;const net=d.added-d.removed;const rc=repos.filter(r=>DATA[r][y]&&DATA[r][y].commits>0).length;h+=`<tr><td>${y}</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td><td>${rc}</td></tr>`;});
+h+=`<tr class="total-row"><td>All Years</td><td>${fmt(gC)}</td><td class="green">${fmt(gA)}</td><td class="red">${fmt(gR)}</td><td class="${gA>=gR?'net-pos':'net-neg'}">${gA>=gR?"+":""}${fmt(gA-gR)}</td><td>${activeRepos.length}</td></tr>`;
 ytbl.innerHTML=h+"</tbody>";
 const rtbl=document.getElementById("repo-table");
 h=`<thead><tr><th>Repository</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>First Year</th><th>Last Year</th></tr></thead><tbody>`;
-activeRepos.forEach(r=>{const d=repoTotals[r];const yrs=Object.keys(DATA[r]).map(Number).filter(y=>DATA[r][y].commits>0).sort();const net=d.added-d.removed;h+=`<tr><td>${r}</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}"${fmt(net)}</td><td>${yrs[0]}</td><td>${yrs[yrs.length-1]}</td></tr>`;});
+activeRepos.forEach(r=>{const d=repoTotals[r];const yrs=Object.keys(DATA[r]).map(Number).filter(y=>DATA[r][y].commits>0).sort();const net=d.added-d.removed;h+=`<tr><td>${r}</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td><td>${yrs[0]}</td><td>${yrs[yrs.length-1]}</td></tr>`;});
 rtbl.innerHTML=h+"</tbody>";
 const chartEl=document.getElementById("repo-chart");
 const mC=Math.max(...activeRepos.map(r=>repoTotals[r].commits));
@@ -204,7 +203,7 @@ activeRepos.forEach(r=>{const d=repoTotals[r];const wC=Math.max(1,(d.commits/mC)
 const tabsEl=document.getElementById("repo-tabs");
 const detailEl=document.getElementById("repo-detail-table");
 let activeRepo=activeRepos[0];
-function renderDetail(repo){const d=DATA[repo];const yrs=Object.keys(d).map(Number).sort();let h2=`<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th></tr></thead><tbody>`;let tc=0,ta=0,tr2=0;yrs.forEach(y=>{if(!d[y].commits&&!d[y].added)return;const net=d[y].added-d[y].removed;tc+=d[y].commits;ta+=d[y].added;tr2+=d[y].removed;h2+=`<tr><td>${y}</td><td>${fmt(d[y].commits)}</td><td class="green">${fmt(d[y].added)}</td><td class="red">${fmt(d[y].removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}"${fmt(net)}</td></tr>`;});const tn=ta-tr2;h2+=`<tr class="total-row"><td>Total</td><td>${fmt(tc)}</td><td class="green">${fmt(ta)}</td><td class="red">${fmt(tr2)}</td><td class="${tn>=0?'net-pos':'net-neg'}">${tn>=0?"+":""}"${fmt(tn)}</td></tr>`;detailEl.innerHTML=h2+"</tbody>";}
+function renderDetail(repo){const d=DATA[repo];const yrs=Object.keys(d).map(Number).sort();let h2=`<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th></tr></thead><tbody>`;let tc=0,ta=0,tr2=0;yrs.forEach(y=>{if(!d[y].commits&&!d[y].added)return;const net=d[y].added-d[y].removed;tc+=d[y].commits;ta+=d[y].added;tr2+=d[y].removed;h2+=`<tr><td>${y}</td><td>${fmt(d[y].commits)}</td><td class="green">${fmt(d[y].added)}</td><td class="red">${fmt(d[y].removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td></tr>`;});const tn=ta-tr2;h2+=`<tr class="total-row"><td>Total</td><td>${fmt(tc)}</td><td class="green">${fmt(ta)}</td><td class="red">${fmt(tr2)}</td><td class="${tn>=0?'net-pos':'net-neg'}">${tn>=0?"+":""}${fmt(tn)}</td></tr>`;detailEl.innerHTML=h2+"</tbody>";}
 activeRepos.forEach(repo=>{const btn=document.createElement("button");btn.className="tab-btn"+(repo===activeRepo?" active":"");btn.textContent=repo;btn.addEventListener("click",()=>{document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");activeRepo=repo;renderDetail(repo);});tabsEl.appendChild(btn);});
 renderDetail(activeRepo);
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
