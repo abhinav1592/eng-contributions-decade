@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Engineering Portfolio — Abhinav Shrivastava</title>
+<style>
+  :root {
+    --bg:#ffffff;--surface:#f7f8fa;--border:#e5e7eb;--text:#1f2328;--muted:#57606a;
+    --accent:#3b82d4;--accent2:#8b5cf6;--green:#1a7f37;--red:#cf222e;--orange:#d97706;
+    --yellow:#b45309;--total-bg:#f0f3ff;--card-border:#dbeafe;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.6;background:var(--bg);color:var(--text);}
+  .wrapper{max-width:1060px;margin:0 auto;padding:32px 20px 56px;}
+  .page-header{margin-bottom:6px;}
+  h1{font-size:24px;font-weight:700;margin-bottom:4px;}
+  .subtitle{color:var(--muted);font-size:13px;margin-bottom:24px;}
+
+  /* Hero cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px;margin-bottom:28px;}
+  .card{background:var(--surface);border:1px solid var(--card-border);border-radius:10px;padding:14px 16px;}
+  .card-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+  .card-value{font-size:26px;font-weight:700;line-height:1.1;}
+  .card-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+  .c-blue{color:var(--accent);}.c-purple{color:var(--accent2);}.c-green{color:var(--green);}.c-red{color:var(--red);}.c-orange{color:var(--orange);}.c-yellow{color:var(--yellow);}
+
+  .section-title{font-size:16px;font-weight:600;margin:32px 0 14px;border-bottom:2px solid var(--border);padding-bottom:8px;}
+
+  /* Customer grid */
+  .cust-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:32px;}
+  @media(max-width:700px){.cust-grid{grid-template-columns:1fr;}}
+  .cust-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .cust-header{display:flex;align-items:center;gap:12px;padding:14px 16px 10px;border-bottom:1px solid var(--border);}
+  .cust-logo{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;font-weight:700;}
+  .cust-name{font-size:14px;font-weight:700;}
+  .cust-sector{font-size:11px;color:var(--muted);margin-top:1px;}
+  .cust-body{padding:12px 16px;}
+  .issue-list{list-style:none;margin:0;padding:0;}
+  .issue-list li{padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px;line-height:1.5;}
+  .issue-list li:last-child{border-bottom:none;}
+  .issue-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;margin-right:5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:middle;}
+  .tag-storage{background:#fef2f2;color:#dc2626;}
+  .tag-compute{background:#f0fdf4;color:#15803d;}
+  .tag-network{background:#eff6ff;color:#1d4ed8;}
+  .tag-perf{background:#fffbeb;color:#b45309;}
+  .tag-image{background:#faf5ff;color:#7c3aed;}
+  .tag-dbcheck{background:#f0fdf4;color:#065f46;}
+
+  /* Intro box */
+  .intro-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:28px;font-size:13.5px;line-height:1.8;}
+  .intro-box p{margin-bottom:10px;}
+  .intro-box p:last-child{margin-bottom:0;}
+
+  .page-footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
+  .mib{margin-top:10px;font-size:11px;opacity:.6;}
+  .back-link { display: inline-block; font-size: 12px; color: var(--muted); text-decoration: none; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); margin-bottom: 20px; }
+  .back-link:hover { background: var(--border); color: var(--text); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <a href="index.html" class="back-link">← Home</a>
+
+  <div class="page-header">
+    <h1>Enterprise Engineering Portfolio — Abhinav Shrivastava</h1>
+    <div class="subtitle">Senior Software Engineer &nbsp;·&nbsp; Cloud Infrastructure &nbsp;·&nbsp; IBM PowerVC (2017–2026)</div>
+  </div>
+
+  <div class="cards">
+    <div class="card"><div class="card-label">Enterprise Clients</div><div class="card-value c-blue">18+</div><div class="card-sub">Named orgs supported</div></div>
+    <div class="card"><div class="card-label">Industries</div><div class="card-value c-purple">7</div><div class="card-sub">Banking, Tech, Gov, Retail…</div></div>
+    <div class="card"><div class="card-label">Geographies</div><div class="card-value c-green">10+</div><div class="card-sub">US, India, EU, AU, APAC</div></div>
+    <div class="card"><div class="card-label">Escalations</div><div class="card-value c-orange">25+</div><div class="card-sub">Production issues resolved</div></div>
+    <div class="card"><div class="card-label">Severity</div><div class="card-value c-red">P1/P2</div><div class="card-sub">Most were production-down</div></div>
+  </div>
+
+  <div class="intro-box">
+    <p>
+      This portfolio documents named enterprise customers whose production issues I directly investigated,
+      root-caused, and resolved as a storage and compute engineer on IBM PowerVC — an OpenStack-based
+      private cloud platform for IBM Power Systems.
+    </p>
+    <p>
+      A "customer escalation" in this context means the issue was reported from a live production environment,
+      filed through IBM's enterprise support system, and assigned to the engineering team for a code-level fix
+      or targeted patch. Many were P1 (critical production outage) or P2 (major function impaired) severity —
+      requiring fast turnaround and direct customer communication. Customer identities have been generalised to
+      protect confidentiality while preserving the industry, geography, and scale context.
+    </p>
+  </div>
+
+  <div class="section-title">Banking &amp; Financial Services</div>
+  <div class="cust-grid">
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#1a3a6b;color:#fff;">PSB</div>
+        <div>
+          <div class="cust-name">Large Private Sector Bank (India)</div>
+          <div class="cust-sector">Private sector bank · India · Multiple engagements</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-network">Network</span>Fibre Channel port issue preventing VM deployment — FC ports misconfigured, storage database lookup failing</li>
+          <li><span class="issue-tag tag-network">Network</span>Zones deleted incorrectly when using initiator-vfc zoning policy — skip processing if WWPN absent from DB</li>
+          <li><span class="issue-tag tag-network">Network</span>Zone name template truncation for dual initiators in initiator-vfc policy causing connectivity failures</li>
+          <li><span class="issue-tag tag-storage">Storage</span>FC port configuration page — Fibre Channel ports not discovered in port configuration view</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#003087;color:#fff;">PUB</div>
+        <div>
+          <div class="cust-name">Public Sector Bank (India)</div>
+          <div class="cust-sector">Public sector bank · India · IPG migration issue</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-compute">Compute</span>VM live migration failure — VMs associated with Initiator Port Groups (IPGs) did not list any eligible destination hosts in migration dialog</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#004B87;color:#fff;">NAT</div>
+        <div>
+          <div class="cust-name">Nationalised Bank (India)</div>
+          <div class="cust-sector">Public sector bank · India · Zoning enforcement</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-network">Network</span>Storage template-defined FC ports not being used for zoning with LPAR adapters — platform auto-selecting wrong ports instead of honoring template</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Unable to map LUN to multiple hosts from a specific server — multipath LUN mapping failure</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#003366;color:#fff;">MCB</div>
+        <div>
+          <div class="cust-name">Major Central Bank (US)</div>
+          <div class="cust-sector">Central bank · United States · Image import failure</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-image">Image</span>Post-upgrade image import failure — Python logic bug prevented importing VM images with more than one data volume after upgrade to PowerVC 2.3.2</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#006400;color:#fff;">CBK</div>
+        <div>
+          <div class="cust-name">Commercial Bank (South Africa)</div>
+          <div class="cust-sector">Commercial bank · South Africa · Storage deletion</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>Customer unable to delete a volume on Hitachi storage — volume stuck in error state, blocked by residual host mappings on the storage array</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- banking -->
+
+  <div class="section-title">Technology &amp; Software</div>
+  <div class="cust-grid">
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#000000;color:#fff;">GTC</div>
+        <div>
+          <div class="cust-name">Global Technology Company (US)</div>
+          <div class="cust-sector">Technology · United States · Multiple P1/P2 escalations</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>Cinder API worker lock contention — Hitachi storage driver holding global lock between API and volume workers causing log pipeline stall (Part 1 &amp; 2)</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Data volumes stuck in "Attaching" state — attach flow not completing, requiring manual state recovery</li>
+          <li><span class="issue-tag tag-perf">Perf</span>LKU (Live Kernel Update of host OS) with 100 volumes — bulk attach timed out on surrogate partition; attach took longer than SLA</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Intermittent 503 Service Unavailable errors in storage API calls</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Bulk detach failed with auth connectivity error (keystoneauth1 ConnectFailure)</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Host mapping visible on storage array while volume shows Available in UI — volume deletion should be blocked until host mapping is cleared</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#0033A0;color:#fff;">GRE</div>
+        <div>
+          <div class="cust-name">Global Retail Enterprise (Sweden)</div>
+          <div class="cust-sector">Retail / Technology · Sweden · HPE storage issues</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>HPE Alletra storage registration failure — platform unable to register the storage array</li>
+          <li><span class="issue-tag tag-storage">Storage</span>HPE storage driver missing multipath flag in <code>validate_connection_type()</code> causing single-path connectivity</li>
+          <li><span class="issue-tag tag-storage">Storage</span>HPE storage in ERROR state with stack traces in cinder-volume logs after registration</li>
+          <li><span class="issue-tag tag-image">Image</span>Image export/import fails on HPE storage — incorrect handling of absent initiator in terminate_connection</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#f5a623;color:#000;">EOV</div>
+        <div>
+          <div class="cust-name">European Observability Software Vendor</div>
+          <div class="cust-sector">Observability software · Austria · Upgrade regression</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-image">Image</span>VM images stopped working after upgrade from PowerVC 2.2.1.2 to 2.3.1 — regression in image metadata processing caused all image-based deployments to fail</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#E31837;color:#fff;">TSF</div>
+        <div>
+          <div class="cust-name">Technology Services Firm (US)</div>
+          <div class="cust-sector">Technology services · United States · Zoning anomaly</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-network">Network</span>Zonemanager randomly doubling zone count and paths for a VM when adding a new LUN — race condition in FC zone management caused duplicate zones across storage fabric</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- tech -->
+
+  <div class="section-title">Retail &amp; Consumer</div>
+  <div class="cust-grid">
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#1a1a2e;color:#d4af37;">MFR</div>
+        <div>
+          <div class="cust-name">Major Fashion Retailer (US)</div>
+          <div class="cust-sector">Fashion retail · United States · Major feature driver</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>Drove the entire Initiator Port Group (IPG) feature implementation — DB schema, API, upgrade scripts, CLI display tool, boot volume tagging, HMC &amp; NovaLink deploy flows, onboard/manage edge cases</li>
+          <li><span class="issue-tag tag-storage">Storage</span>IPG tag for boot volumes during Storage Connectivity Group creation — ensures correct storage path affinity for IBMi workloads</li>
+          <li><span class="issue-tag tag-perf">Perf</span>Bulk attach SVT script fixes and formatting for high-volume attach test scenarios</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#FF6900;color:#fff;">GBC</div>
+        <div>
+          <div class="cust-name">Global Beverage Conglomerate (Brazil)</div>
+          <div class="cust-sector">Beverage / FMCG · Brazil · Volume attachment failures</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>Volume detach failure — KeyError in data response from storage connector left volume stuck in detaching state</li>
+          <li><span class="issue-tag tag-dbcheck">DB</span>Volume attachment interruption left 14 orphaned BDM (block device mapping) entries in database — customer could delete volumes but stale DB records remained, blocking future operations (PowerVC 2.3.2)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- retail -->
+
+  <div class="section-title">Government &amp; Public Sector</div>
+  <div class="cust-grid">
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#003A70;color:#fff;">GIA</div>
+        <div>
+          <div class="cust-name">Government IT Agency (Australia)</div>
+          <div class="cust-sector">Government IT services · Australia · Multiple deep-dive engagements</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-compute">Compute</span>VMs deployed with only 50% of expected storage paths — IPG / SPG (Storage Port Group) path allocation halved during VM deployment</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Removing a compute host should delete associated Initiator Port Groups — platform leaving empty IPGs behind after host removal</li>
+          <li><span class="issue-tag tag-storage">Storage</span>movevdisk retry logic — SVC storage operation intermittently failing, needed retry wrapper</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Replaced FC port handling in powervc-capture/restore scripts — IPG restore scripts not accounting for WWPN port replacement events</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Authored powervc-capture and restore scripts for IPG (Initiator Port Group) backup and recovery</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- gov -->
+
+  <div class="section-title">Managed Services &amp; IT Providers</div>
+  <div class="cust-grid">
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#005EB8;color:#fff;">MSP</div>
+        <div>
+          <div class="cust-name">Managed IT Services Provider (US/Europe)</div>
+          <div class="cust-sector">IT services · US &amp; Europe · Multi-release fixes</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-network">Network</span>VM deletion intermittently failing to remove Fibre Channel fabric zones and host objects on storage array</li>
+          <li><span class="issue-tag tag-compute">Compute</span>Remote Restart (RR) / Automated Remote Restart (ARR) failing for VMs with IPG enabled — HA restart not honoring port group assignments on 2.1.1 + ifix</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#00539F;color:#fff;">ISP</div>
+        <div>
+          <div class="cust-name">IT Solutions Provider (Canada)</div>
+          <div class="cust-sector">IT services · Canada · Stale volume attachment</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-dbcheck">DB</span>Deleted volume still showing as attached to a VM — orphaned attachment record in database after volume deletion, causing inconsistent state visible to customers</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#0057B8;color:#fff;">EIT</div>
+        <div>
+          <div class="cust-name">Enterprise IT Services Company (Finland)</div>
+          <div class="cust-sector">IT services · Finland · Upgrade documentation gap</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-image">Image</span>Documentation gap: customers not warned to update ALL backup nodes before upgrading to PowerVC 2.3.1 — RPC version mismatch between nodes prevented image imports after partial upgrade</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- managed services -->
+
+  <div class="section-title">Enterprise &amp; Other</div>
+  <div class="cust-grid">
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#CC0000;color:#fff;">EUC</div>
+        <div>
+          <div class="cust-name">Enterprise Upgrade Customer</div>
+          <div class="cust-sector">Enterprise · Upgrade issue</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>Post-upgrade to PowerVC 2.3.1 — incorrect error message displayed when a storage template is not set on a volume, making diagnosis harder for operators</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#2b6cb0;color:#fff;">FSF</div>
+        <div>
+          <div class="cust-name">Financial Services Firm (US)</div>
+          <div class="cust-sector">Financial services · United States · Bulk ops &amp; replication</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>Bulk volume detach never completing on IBM PowerVS environment — detach pipeline hung indefinitely</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Auxiliary volume size change not reflecting after 24 hours — global mirror replication volume sizing out of sync after resize operation</li>
+          <li><span class="issue-tag tag-storage">Storage</span>GRS (Global Replication Service): Auxiliary volume changes for failover/failback flows</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#6d28d9;color:#fff;">SVP</div>
+        <div>
+          <div class="cust-name">Storage Vendor (POC Engagement)</div>
+          <div class="cust-sector">Storage vendor · VM capture integration</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-image">Image</span>VM capture failing with Glance (image service) HTTP 500 error during PowerVC 2.3.0 integration validation for new storage backend</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#1c4e80;color:#fff;">IED</div>
+        <div>
+          <div class="cust-name">Internal Enterprise Deployments</div>
+          <div class="cust-sector">IBM internal enterprise deployments · Multiple P1 issues</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-compute">Compute</span>LKU (Live Kernel Update) failures across multiple customer deployments — surrogate LPAR creation failing with mixed NPIV/SSP environments</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Unable to manage hosts with mixed NPIV and SSP storage connectivity</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Unable to add IBM Storwize V7000 as pluggable storage provider</li>
+          <li><span class="issue-tag tag-compute">Compute</span>Cluster state changing to Error / Critical after HMC firmware update</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#0f4c81;color:#fff;">CPV</div>
+        <div>
+          <div class="cust-name">Consumer Products Company (US/PowerVS)</div>
+          <div class="cust-sector">Consumer products · US · PowerVS SRE escalation</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-perf">Perf</span>Slow response to volume detach in IBM PowerVS environment — SRE-reported latency issue in detach pipeline under high concurrency</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cust-card">
+      <div class="cust-header">
+        <div class="cust-logo" style="background:#374151;color:#fff;">GEN</div>
+        <div>
+          <div class="cust-name">Generic Enterprise (unnamed field reports)</div>
+          <div class="cust-sector">Multiple enterprise clients · Field-reported production issues</div>
+        </div>
+      </div>
+      <div class="cust-body">
+        <ul class="issue-list">
+          <li><span class="issue-tag tag-storage">Storage</span>Volume page slow to load with large number of volumes — UI refresh performance degradation</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Hitachi storage spinning forever due to bad/expired TLS certificate — no timeout handling</li>
+          <li><span class="issue-tag tag-compute">Compute</span>HMC idle session leak — PowerVC leaving open sessions on Hardware Management Console over time</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Storage connectivity group broken after network change</li>
+          <li><span class="issue-tag tag-storage">Storage</span>Storage in Error/Critical state — unexplained transition to error after routine operations</li>
+          <li><span class="issue-tag tag-dbcheck">DB</span>powervc-dbcheck utility fails to recognize non-zero deleted field values in various database tables</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- enterprise -->
+
+  <!-- Issue category summary -->
+  <div class="section-title">Issue Category Summary</div>
+  <div style="overflow-x:auto;margin-bottom:8px;">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <thead>
+        <tr style="background:var(--surface);border-bottom:2px solid var(--border);">
+          <th style="padding:8px 12px;text-align:left;font-weight:600;color:var(--muted);">Category</th>
+          <th style="padding:8px 12px;text-align:left;font-weight:600;color:var(--muted);">What it means</th>
+          <th style="padding:8px 12px;text-align:center;font-weight:600;color:var(--muted);">Issues</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 12px;"><span class="issue-tag tag-storage">Storage</span></td>
+          <td style="padding:8px 12px;font-size:12px;color:var(--muted);">Volume create/attach/detach/delete failures, SAN array driver bugs, host mapping issues</td>
+          <td style="padding:8px 12px;text-align:center;font-weight:700;color:var(--red);">18</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 12px;"><span class="issue-tag tag-network">Network</span></td>
+          <td style="padding:8px 12px;font-size:12px;color:var(--muted);">Fibre Channel zone management, port discovery, path count issues</td>
+          <td style="padding:8px 12px;text-align:center;font-weight:700;color:var(--accent);">8</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 12px;"><span class="issue-tag tag-compute">Compute</span></td>
+          <td style="padding:8px 12px;font-size:12px;color:var(--muted);">VM lifecycle (deploy, migrate, restart), hypervisor connectivity, host management</td>
+          <td style="padding:8px 12px;text-align:center;font-weight:700;color:var(--green);">7</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 12px;"><span class="issue-tag tag-image">Image</span></td>
+          <td style="padding:8px 12px;font-size:12px;color:var(--muted);">VM image export/import/capture failures, upgrade regressions on image workflows</td>
+          <td style="padding:8px 12px;text-align:center;font-weight:700;color:var(--accent2);">6</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 12px;"><span class="issue-tag tag-dbcheck">DB</span></td>
+          <td style="padding:8px 12px;font-size:12px;color:var(--muted);">Orphaned database records, stale attachment state, consistency checker gaps</td>
+          <td style="padding:8px 12px;text-align:center;font-weight:700;color:var(--green);">4</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 12px;"><span class="issue-tag tag-perf">Perf</span></td>
+          <td style="padding:8px 12px;font-size:12px;color:var(--muted);">Bulk operation timeouts, API response latency, attach/detach throughput regressions</td>
+          <td style="padding:8px 12px;text-align:center;font-weight:700;color:var(--orange);">4</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-footer">
+    <p>All issues were investigated and resolved as part of enterprise cloud infrastructure engineering work on IBM PowerVC.</p>
+    <p>Customer identities have been generalised to protect confidentiality. Industry, geography, and scale context is preserved.</p>
+    <div class="mib">Abhinav Shrivastava · Senior Software Engineer · Cloud Infrastructure</div>
+  </div>
+
+</div>
+</body>
+</html>
