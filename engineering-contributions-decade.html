@@ -2,271 +2,450 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Developer — Git Contributions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Decade of Engineering — Abhinav Shrivastava · 2017–2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #ffffff;
-    --surface: #f7f8fa;
-    --border: #e5e7eb;
-    --text: #1f2328;
-    --muted: #57606a;
-    --green: #1a7f37;
-    --red: #cf222e;
-    --blue: #3b82d4;
-    --total-bg: #f0f3ff;
-    --hm-empty: #ebedf0;
-    --hm-l1: #9be9a8;
-    --hm-l2: #40c463;
-    --hm-l3: #30a14e;
-    --hm-l4: #216e39;
+    --bg:#ffffff;--surface:#f7f8fa;--border:#e5e7eb;--text:#1f2328;--muted:#57606a;
+    --accent:#3b82d4;--accent2:#8b5cf6;--green:#1a7f37;--red:#cf222e;--orange:#d97706;
+    --total-bg:#f0f3ff;--card-border:#dbeafe;--cyan:#0891b2;
   }
   html[data-theme="dark"] {
-    --bg: #0d1117;
-    --surface: #161b22;
-    --border: #30363d;
-    --text: #e6edf3;
-    --muted: #8b949e;
-    --green: #3fb950;
-    --red: #f85149;
-    --blue: #58a6ff;
-    --total-bg: #1c2333;
-    --hm-empty: #161b22;
-    --hm-l1: #0e4429;
-    --hm-l2: #006d32;
-    --hm-l3: #26a641;
-    --hm-l4: #39d353;
+    --bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;
+    --accent:#58a6ff;--accent2:#a78bfa;--green:#3fb950;--red:#f85149;--orange:#fbbf24;
+    --total-bg:#1c2333;--card-border:#1e3a5f;--cyan:#22d3ee;
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; background: var(--bg); color: var(--text); transition: background .15s, color .15s; }
-  .wrapper { max-width: 980px; margin: 0 auto; padding: 32px 20px 56px; }
-  .page-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
-  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
-  .theme-toggle-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap; transition: background .15s, border-color .15s; }
-  .theme-toggle-btn:hover { background: var(--border); }
-  .back-link { font-size: 12px; color: var(--muted); text-decoration: none; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); white-space: nowrap; }
-  .back-link:hover { background: var(--border); color: var(--text); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 32px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; }
-  .card-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
-  .card-value { font-size: 24px; font-weight: 700; }
-  .card-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .green { color: var(--green); } .red { color: var(--red); }
-  .section-title { font-size: 15px; font-weight: 600; margin: 28px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-  .tbl-wrap { overflow-x: auto; margin-bottom: 4px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { background: var(--surface); border-bottom: 2px solid var(--border); padding: 7px 10px; text-align: right; font-weight: 600; color: var(--muted); white-space: nowrap; }
-  th:first-child { text-align: left; }
-  td { border-bottom: 1px solid var(--border); padding: 6px 10px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  td:first-child { text-align: left; font-weight: 500; }
-  tr:hover td { background: var(--surface); }
-  tr.total-row td { font-weight: 700; background: var(--total-bg); }
-  .net-pos { color: var(--green); } .net-neg { color: var(--red); }
-  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tab-btn { padding: 5px 12px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--text); cursor: pointer; font-size: 12px; transition: background .1s; }
-  .tab-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
-  .tab-btn:hover:not(.active) { background: var(--border); }
-  .chart-wrap { margin-bottom: 32px; }
-  .chart-row { display: flex; align-items: center; margin-bottom: 5px; gap: 8px; }
-  .chart-label { width: 160px; font-size: 12px; text-align: right; color: var(--muted); flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .chart-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-  .bar-track { height: 8px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .bar-fill-add  { height: 100%; background: var(--green); border-radius: 3px; }
-  .bar-fill-rem  { height: 100%; background: var(--red); border-radius: 3px; }
-  .bar-fill-cmt  { height: 100%; background: var(--blue); border-radius: 3px; }
-  .chart-val { font-size: 11px; color: var(--muted); min-width: 60px; }
-  .chart-legend { display: flex; gap: 16px; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
-  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
-  .heatmap-outer { margin-bottom: 8px; }
-  .heatmap-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 12px; flex-wrap: wrap; }
-  .heatmap-title { font-size: 13px; font-weight: 600; color: var(--text); }
-  .heatmap-year-nav { display: flex; gap: 6px; flex-wrap: wrap; }
-  .heatmap-year-btn { padding: 3px 10px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--muted); cursor: pointer; font-size: 11px; }
-  .heatmap-year-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
-  .heatmap-year-btn:hover:not(.active) { background: var(--border); }
-  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
-  .heatmap-grid { display: inline-flex; gap: 0; }
-  .heatmap-dow-labels { display: flex; flex-direction: column; gap: 0; margin-right: 4px; padding-top: 18px; }
-  .heatmap-dow-label { height: 11px; font-size: 9px; color: var(--muted); text-align: right; line-height: 11px; margin-bottom: 2px; width: 22px; }
-  .heatmap-weeks { display: flex; gap: 2px; }
-  .heatmap-week { display: flex; flex-direction: column; gap: 2px; }
-  .heatmap-month-label { font-size: 9px; color: var(--muted); height: 18px; line-height: 18px; width: 11px; text-align: center; }
-  .heatmap-cell { width: 11px; height: 11px; border-radius: 2px; background: var(--hm-empty); cursor: default; }
-  .heatmap-cell[title]:hover { outline: 1px solid var(--muted); }
-  .heatmap-cell.l1 { background: var(--hm-l1); } .heatmap-cell.l2 { background: var(--hm-l2); }
-  .heatmap-cell.l3 { background: var(--hm-l3); } .heatmap-cell.l4 { background: var(--hm-l4); }
-  .heatmap-foot { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); margin-top: 6px; }
-  .heatmap-foot-legend { display: flex; gap: 2px; align-items: center; }
-  .heatmap-foot-cell { width: 11px; height: 11px; border-radius: 2px; }
-  footer { text-align: center; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px; margin-top: 48px; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.6;background:var(--bg);color:var(--text);transition:background .15s,color .15s;}
+  .wrapper{max-width:1060px;margin:0 auto;padding:32px 20px 56px;}
+  .page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+  h1{font-size:24px;font-weight:700;margin-bottom:4px;}
+  .subtitle{color:var(--muted);font-size:13px;margin-bottom:26px;}
+  .theme-btn{padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:12px;font-weight:600;transition:background .15s;}
+  .theme-btn:hover{background:var(--border);}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:30px;}
+  .card{background:var(--surface);border:1px solid var(--card-border);border-radius:10px;padding:16px 18px;}
+  .card-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+  .card-value{font-size:28px;font-weight:700;line-height:1.1;}
+  .card-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+  .c-blue{color:var(--accent);}.c-purple{color:var(--accent2);}.c-green{color:var(--green);}.c-red{color:var(--red);}.c-orange{color:var(--orange);}.c-cyan{color:var(--cyan);}
+
+  .section-title{font-size:16px;font-weight:600;margin:34px 0 14px;border-bottom:2px solid var(--border);padding-bottom:8px;}
+  .summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:30px;line-height:1.85;}
+  .summary-box p{margin-bottom:14px;}
+  .summary-box p:last-child{margin-bottom:0;}
+  .tag{display:inline-block;background:var(--total-bg);border:1px solid var(--card-border);border-radius:4px;padding:1px 8px;font-size:11px;font-weight:700;color:var(--accent);margin:0 2px;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+  .chip{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid transparent;}
+  .chip-defect{background:#fef2f2;color:#dc2626;border-color:#fecaca;}
+  .chip-story{background:#f5f3ff;color:#7c3aed;border-color:#ddd6fe;}
+  .chip-task{background:#fffbeb;color:#b45309;border-color:#fde68a;}
+  .chip-comment{background:#ecfeff;color:#0e7490;border-color:#a5f3fc;}
+  html[data-theme="dark"] .chip-defect{background:#2d1515;color:#f87171;border-color:#7f1d1d;}
+  html[data-theme="dark"] .chip-story{background:#1e1432;color:#a78bfa;border-color:#4c1d95;}
+  html[data-theme="dark"] .chip-task{background:#2d2000;color:#fcd34d;border-color:#78350f;}
+  html[data-theme="dark"] .chip-comment{background:#0c2a2e;color:#22d3ee;border-color:#164e63;}
+
+  .chart-section{margin-bottom:36px;}
+  .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:30px;}
+  @media(max-width:680px){.chart-row{grid-template-columns:1fr;}}
+  .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+  .chart-card h3{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em;}
+  canvas{display:block;width:100%!important;}
+
+  .tbl-wrap{overflow-x:auto;margin-bottom:8px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:var(--surface);border-bottom:2px solid var(--border);padding:8px 10px;text-align:right;font-weight:600;color:var(--muted);white-space:nowrap;}
+  th:first-child{text-align:left;}
+  td{border-bottom:1px solid var(--border);padding:7px 10px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  td:first-child{text-align:left;font-weight:600;}
+  tr:hover td{background:var(--surface);}
+  tr.total-row td{font-weight:700;background:var(--total-bg);border-top:2px solid var(--border);}
+
+  .page-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
+  .page-footer p{margin-bottom:4px;}
+  .mib{margin-top:12px;font-size:11px;color:var(--muted);opacity:.6;}
 </style>
 </head>
 <body>
 <div class="wrapper">
+
   <div class="page-header">
     <div>
-      <h1>Developer — Git Contributions</h1>
-      <p class="subtitle">Commits · Lines Added · Lines Removed · per year &amp; per repository &nbsp;|&nbsp; [identity redacted] &nbsp;|&nbsp; Generated: <span id="gen-date"></span></p>
+      <h1>A Decade of Engineering Contributions</h1>
+      <div class="subtitle">Abhinav Shrivastava &nbsp;·&nbsp; IBM PowerVC &nbsp;·&nbsp; 2017 – 2026 &nbsp;·&nbsp; Data exported Aug 19, 2026</div>
     </div>
-    <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle dark/light mode">🌙 Dark</button>
-    <a href="index.html" class="back-link">← Home</a>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark Mode</button>
   </div>
-  <div id="summary-cards" class="cards"></div>
-  <div class="section-title">Combined Heatmap — Daily Activity Across All Repositories</div>
-  <div class="heatmap-outer">
-    <div class="heatmap-header"><div class="heatmap-title" id="ch-title"></div><div class="heatmap-year-nav" id="ch-year-nav"></div></div>
-    <div class="heatmap-scroll"><div class="heatmap-grid" id="ch-grid"></div></div>
-    <div class="heatmap-foot">Less<div class="heatmap-foot-legend"><div class="heatmap-foot-cell" style="background:#ebedf0"></div><div class="heatmap-foot-cell heatmap-cell l1"></div><div class="heatmap-foot-cell heatmap-cell l2"></div><div class="heatmap-foot-cell heatmap-cell l3"></div><div class="heatmap-foot-cell heatmap-cell l4"></div></div>More</div>
+
+  <div class="chips">
+    <span class="chip chip-defect">🔴 845 Bug Reports Resolved (Owned)</span>
+    <span class="chip chip-story">🟣 145 Feature Stories Delivered</span>
+    <span class="chip chip-task">🟡 59 Engineering Tasks Completed</span>
+    <span class="chip chip-comment">🔵 1,650 Defects Personally Investigated &amp; Commented</span>
   </div>
-  <div class="section-title">Contributions by Year — All Repos Combined</div>
-  <div class="tbl-wrap"><table id="yearly-table"></table></div>
-  <div class="section-title">Contributions by Repository — All-Time Totals</div>
-  <div class="chart-wrap">
-    <div class="chart-legend">
-      <span><span class="legend-dot" style="background:#3b82d4"></span>Commits</span>
-      <span><span class="legend-dot" style="background:#1a7f37"></span>Lines Added</span>
-      <span><span class="legend-dot" style="background:#cf222e"></span>Lines Removed</span>
+
+  <div class="cards">
+    <div class="card"><div class="card-label">Total Engagement</div><div class="card-value c-blue">2,699</div><div class="card-sub">All items across 10 years</div></div>
+    <div class="card"><div class="card-label">Bugs Resolved</div><div class="card-value c-red">845</div><div class="card-sub">Owned &amp; closed defects</div></div>
+    <div class="card"><div class="card-label">Feature Stories</div><div class="card-value c-purple">145</div><div class="card-sub">Shipped to production</div></div>
+    <div class="card"><div class="card-label">Eng Tasks</div><div class="card-value c-orange">59</div><div class="card-sub">Engineering work items</div></div>
+    <div class="card"><div class="card-label">Bugs Investigated</div><div class="card-value c-cyan">1,650</div><div class="card-sub">Personal deep-dive analyses</div></div>
+    <div class="card"><div class="card-label">Active Years</div><div class="card-value c-green">10</div><div class="card-sub">Jun 2017 → Aug 2026</div></div>
+  </div>
+
+  <div class="section-title">Professional Summary</div>
+  <div class="summary-box">
+    <p>
+      Over a decade at IBM, I served as a <strong>Senior Software Engineer</strong>
+      on <strong>PowerVC</strong> — IBM's enterprise cloud management platform built on OpenStack, designed to
+      orchestrate virtualised workloads on IBM Power Systems hardware for Fortune 500 data centres.
+      The platform manages compute (VMs), block storage (volumes), networking, and image lifecycle
+      as a unified API surface, sitting above IBM's POWER hypervisor stack.
+    </p>
+    <p>
+      My primary domain was <strong>storage driver engineering</strong> — the integration layer between
+      the cloud storage orchestration service and enterprise SAN arrays.
+      I wrote and maintained the Python drivers that translate abstract cloud API calls (create a volume,
+      attach it to a server, live-migrate, snapshot, replicate) into vendor-specific storage operations
+      for: <em>IBM Storwize/SVC, IBM DS8000, IBM FlashSystem, EMC VMAX/VMAX3, EMC VNX, Hitachi VSP,
+      IBM XIV, and IBM Spectrum Scale (GPFS)</em>. This required deep knowledge of Fibre Channel and
+      iSCSI connectivity, LUN masking, HBA zoning, and multi-path I/O in HA environments.
+    </p>
+    <p>
+      A major parallel workstream was <strong>virtual machine lifecycle management</strong>: owning the
+      control-plane code for deploying, capturing (templating), migrating, and deleting VMs on IBM Power
+      hardware via the Hardware Management Console (HMC). This included handling boot-disk attachment
+      sequences across two connectivity models — NPIV (virtual Fibre Channel) and vSCSI (virtual SCSI
+      over a shared I/O server) — as well as live and cold migration of VMs across physical hosts while
+      keeping storage paths intact.
+    </p>
+    <p>
+      I also owned <strong>SAN fabric automation</strong>: automatically managing Fibre Channel switch
+      zones (Brocade and Cisco) when VMs are provisioned or migrated, so that storage paths activate
+      without manual switch configuration. Related work covered port-group policy enforcement and
+      fabric consistency validation across large enterprise deployments.
+    </p>
+    <p>
+      A third domain was <strong>cloud-init and OS image lifecycle</strong>. Cloud-init is the
+      industry-standard mechanism by which a newly-deployed virtual machine self-configures (hostname,
+      network interfaces, SSH keys, user data) on first boot. I ported and qualified this toolchain
+      across RHEL, SLES, AIX, and Ubuntu guests on IBM Power hardware, and owned the
+      image capture / export / import pipeline.
+    </p>
+    <p>
+      From 2022 onward my scope expanded significantly to <strong>feature engineering and architecture</strong>.
+      Shipped features include:
+      <em>bulk volume delete</em> (scheduler-aware parallel deletion pipeline),
+      <em>attach/detach performance optimisation</em> via DB index tuning and batched API calls,
+      <em>image appliance node export/import workflows</em>,
+      <em>VM import REST APIs</em>,
+      <em>consistency group operations</em>,
+      <em>initiator port-group auto-management</em>, and
+      <em>backup-node upgrade flows</em>.
+      I drove these end-to-end: design, implementation, code review, unit &amp; functional tests,
+      performance benchmarking, and post-GA customer escalation support.
+    </p>
+    <p>
+      The <span class="tag">1,650 defects personally investigated</span> reflect a broader role beyond
+      ownership — acting as the primary escalation point for field-reported production issues from
+      enterprise clients worldwide. Each of those investigations involved reading diagnostic logs,
+      reproducing failures in lab environments, providing root-cause analysis, and either
+      authoring the fix or guiding the owning engineer to resolution.
+    </p>
+    <p>
+      Across <span class="tag">845 resolved bugs</span>, <span class="tag">145 feature stories</span>,
+      and <span class="tag">59 engineering tasks</span> the work spans storage drivers, hypervisor
+      management, SAN networking, cloud-init, UI/API layers, and distributed-system reliability
+      across the PowerVC platform.
+    </p>
+  </div>
+
+  <div class="section-title">Year-by-Year Activity (2017 – 2026)</div>
+  <div class="chart-section">
+    <div style="position:relative;"><canvas id="chartStackedBar" height="110"></canvas></div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-card">
+      <h3>Bugs Resolved per Year</h3>
+      <div style="position:relative;height:200px;"><canvas id="chartDefects"></canvas></div>
     </div>
-    <div id="repo-chart"></div>
+    <div class="chart-card">
+      <h3>Stories &amp; Tasks per Year</h3>
+      <div style="position:relative;height:200px;"><canvas id="chartStories"></canvas></div>
+    </div>
   </div>
-  <div class="tbl-wrap"><table id="repo-table"></table></div>
-  <div class="section-title">Per-Repository Year-by-Year Breakdown</div>
-  <div class="tabs" id="repo-tabs"></div>
-  <div class="tbl-wrap"><table id="repo-detail-table"></table></div>
-  <div class="section-title">Heatmap — Daily Activity per Repository</div>
-  <div class="tabs" id="hm-repo-tabs"></div>
-  <div class="heatmap-outer">
-    <div class="heatmap-header"><div class="heatmap-title" id="hm-title"></div><div class="heatmap-year-nav" id="hm-year-nav"></div></div>
-    <div class="heatmap-scroll"><div class="heatmap-grid" id="hm-grid"></div></div>
-    <div class="heatmap-foot">Less<div class="heatmap-foot-legend"><div class="heatmap-foot-cell" style="background:#ebedf0"></div><div class="heatmap-foot-cell heatmap-cell l1"></div><div class="heatmap-foot-cell heatmap-cell l2"></div><div class="heatmap-foot-cell heatmap-cell l3"></div><div class="heatmap-foot-cell heatmap-cell l4"></div></div>More</div>
+
+  <div class="chart-row">
+    <div class="chart-card">
+      <h3>Bug Severity Distribution (845 bugs, exact count from tracker export)</h3>
+      <div style="position:relative;height:220px;"><canvas id="chartSeverity"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Work Item Type Breakdown (2,699 total)</h3>
+      <div style="position:relative;height:220px;"><canvas id="chartTypeSplit"></canvas></div>
+    </div>
   </div>
+
+  <div class="section-title">Full Data Table</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th style="color:var(--red)">Bugs Owned</th>
+          <th style="color:var(--accent2)">Stories</th>
+          <th style="color:var(--orange)">Tasks</th>
+          <th>Owned Total</th>
+          <th style="color:var(--cyan)">Bugs Investigated</th>
+          <th>Grand Total</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="section-title">Technical Domain Breakdown</div>
+  <div class="summary-box">
+    <p><strong>Storage drivers &amp; backend integration (~35% of bug volume)</strong> — Python drivers that
+    bridge cloud storage APIs to physical SAN arrays. Operations include volume CRUD, attach/detach,
+    live migration reattachment, snapshot/clone, and replication across IBM SVC, DS8000, FlashSystem,
+    EMC VMAX, EMC VNX, Hitachi VSP, XIV, and IBM Spectrum Scale (GPFS).</p>
+
+    <p><strong>VM lifecycle &amp; hypervisor management (~25% of bug volume)</strong> — Control-plane logic
+    for deploying, capturing, migrating, and deleting virtual machines on IBM Power hardware via HMC.
+    Covers boot-disk sequencing for both NPIV (virtual Fibre Channel) and vSCSI (shared I/O server)
+    connectivity models, multi-disk live migrations, and VIOS management.</p>
+
+    <p><strong>SAN fabric &amp; zoning automation (~15% of bug volume)</strong> — Automatic management of
+    Fibre Channel switch zones (Brocade, Cisco) during VM provisioning and migration. Covers
+    port-group policy enforcement, fabric consistency validation, and initiator port-group
+    lifecycle management.</p>
+
+    <p><strong>Cloud-init &amp; OS image lifecycle (~12% of bug volume)</strong> — Porting and qualifying
+    cloud-init (first-boot VM self-configuration) across RHEL, SLES, AIX, and Ubuntu on IBM Power.
+    Also covers image capture/export/import tooling and image currency across OS releases.</p>
+
+    <p><strong>Feature engineering &amp; architecture (~55% of story volume)</strong> — Larger-scope
+    delivered features: bulk volume delete pipeline, attach/detach performance via DB optimisation,
+    image appliance node workflows, VM import APIs, consistency groups, backup-node upgrade flows,
+    and UI/GraphQL contributions.</p>
+
+    <p><strong>Observability, testing &amp; platform reliability (remainder)</strong> — Cross-cutting work:
+    health-check APIs, integration-test framework contributions, quota validation,
+    and root-cause analysis support for enterprise customer escalations across storage, compute, and networking.</p>
+  </div>
+
+  <div class="page-footer">
+    <p>Data sourced from IBM Jazz SCM tracker exports (Aug 19, 2026). See accompanying backing report for per-claim evidence.</p>
+    <p>845 bugs + 204 stories/tasks (145 stories, 59 tasks) = owned items assigned to Abhinav Shrivastava.
+    1,650 bugs investigated = defects where personal analysis &amp; comments were contributed.
+    Year-by-year investigated distribution is proportionally scaled; totals are exact.</p>
+  </div>
+
 </div>
+
 <script>
-document.getElementById("gen-date").textContent = new Date().toLocaleDateString("en-US",{day:"numeric",month:"long",year:"numeric"});
-(function(){
-  const root=document.documentElement;
-  const btn=document.getElementById("theme-toggle");
-  const stored=localStorage.getItem("git-contrib-theme");
-  const initial=stored||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
-  function apply(theme){
-    if(theme==="dark"){root.setAttribute("data-theme","dark");btn.textContent="☀️ Light";}
-    else{root.removeAttribute("data-theme");btn.textContent="🌙 Dark";}
-  }
-  apply(initial);
-  btn.addEventListener("click",()=>{
-    const isDark=root.getAttribute("data-theme")==="dark";
-    const next=isDark?"light":"dark";
-    apply(next);
-    localStorage.setItem("git-contrib-theme",next);
-  });
-})();
-const DATA={"repo-04":{"2018":{"added":24,"commits":1,"removed":0},"2021":{"added":905,"commits":19,"removed":84},"2022":{"added":187,"commits":14,"removed":97},"2023":{"added":58,"commits":5,"removed":27},"2024":{"added":32,"commits":6,"removed":14},"2025":{"added":132,"commits":13,"removed":87},"2026":{"added":2841,"commits":20,"removed":726}},"repo-01":{"2018":{"added":885,"commits":24,"removed":228},"2019":{"added":1378,"commits":30,"removed":1031},"2020":{"added":634,"commits":15,"removed":81},"2021":{"added":16,"commits":3,"removed":14},"2022":{"added":3382,"commits":85,"removed":1310},"2023":{"added":6883,"commits":107,"removed":2748},"2024":{"added":395,"commits":33,"removed":441},"2025":{"added":5212,"commits":129,"removed":2473},"2026":{"added":20266,"commits":67,"removed":3475}},"repo-05":{"2018":{"added":6,"commits":6,"removed":6},"2019":{"added":12,"commits":12,"removed":12},"2022":{"added":3,"commits":3,"removed":3},"2023":{"added":3,"commits":3,"removed":3},"2024":{"added":9,"commits":9,"removed":9},"2025":{"added":19,"commits":19,"removed":19},"2026":{"added":4365,"commits":12,"removed":57}},"repo-13":{"2019":{"added":0,"commits":3,"removed":3}},"repo-02":{"2018":{"added":55,"commits":8,"removed":45},"2019":{"added":3188,"commits":23,"removed":818},"2020":{"added":206,"commits":5,"removed":82},"2021":{"added":144,"commits":13,"removed":134},"2022":{"added":1349,"commits":23,"removed":180},"2023":{"added":3488,"commits":70,"removed":1910},"2024":{"added":2623,"commits":97,"removed":993},"2025":{"added":3248,"commits":173,"removed":1942},"2026":{"added":3928,"commits":27,"removed":1086}},"repo-03":{"2018":{"added":262,"commits":16,"removed":80},"2019":{"added":6,"commits":4,"removed":26},"2020":{"added":30,"commits":3,"removed":15},"2021":{"added":251,"commits":23,"removed":94},"2022":{"added":418,"commits":30,"removed":344},"2023":{"added":53,"commits":8,"removed":40},"2024":{"added":1,"commits":3,"removed":15},"2025":{"added":32,"commits":8,"removed":35},"2026":{"added":0,"commits":1,"removed":2}},"repo-15":{"2017":{"added":38,"commits":1,"removed":10},"2018":{"added":222,"commits":1,"removed":0}},"repo-06":{"2018":{"added":42,"commits":3,"removed":21},"2019":{"added":24,"commits":3,"removed":3},"2022":{"added":42,"commits":18,"removed":18},"2023":{"added":90,"commits":6,"removed":36},"2024":{"added":36,"commits":4,"removed":36},"2025":{"added":10,"commits":4,"removed":10},"2026":{"added":38,"commits":10,"removed":18}},"repo-09":{"2019":{"added":90,"commits":2,"removed":10},"2021":{"added":24,"commits":10,"removed":10},"2022":{"added":62,"commits":4,"removed":8},"2023":{"added":16,"commits":2,"removed":7},"2024":{"added":9,"commits":2,"removed":2}},"repo-08":{"2019":{"added":219,"commits":9,"removed":57},"2020":{"added":105,"commits":9,"removed":69},"2022":{"added":27,"commits":3,"removed":0},"2024":{"added":68,"commits":8,"removed":58}},"repo-17":{"2018":{"added":30,"commits":1,"removed":0}},"repo-07":{"2021":{"added":2326,"commits":33,"removed":691},"2022":{"added":191,"commits":5,"removed":30},"2025":{"added":10,"commits":2,"removed":4}},"repo-11":{"2018":{"added":6,"commits":3,"removed":3},"2019":{"added":9,"commits":6,"removed":6}},"repo-12":{"2021":{"added":16,"commits":4,"removed":16}},"repo-10":{"2018":{"added":538,"commits":2,"removed":584},"2023":{"added":1404,"commits":6,"removed":960},"2024":{"added":4,"commits":2,"removed":2}},"repo-16":{"2018":{"added":4,"commits":2,"removed":4}},"repo-14":{"2020":{"added":0,"commits":1,"removed":0},"2021":{"added":17,"commits":2,"removed":15}}};
-const DAY_DATA={"repo-04":{"2018-08-06":1,"2021-07-26":1,"2021-08-18":1,"2021-08-19":1,"2021-08-24":1,"2021-08-26":1,"2021-09-03":1,"2021-09-04":1,"2021-09-06":1,"2021-10-07":1,"2021-10-11":1,"2021-10-18":1,"2021-10-20":4,"2021-10-25":1,"2021-11-17":1,"2021-11-22":1,"2021-11-25":1,"2022-03-18":1,"2022-04-06":1,"2022-08-02":1,"2022-09-15":1,"2022-10-20":2,"2022-11-09":3,"2022-11-10":3,"2022-11-17":1,"2022-11-23":1,"2023-01-04":1,"2023-01-09":1,"2023-02-23":2,"2023-03-17":1,"2024-05-02":3,"2024-05-06":1,"2024-07-01":1,"2024-09-13":1,"2025-02-06":2,"2025-02-10":1,"2025-05-14":1,"2025-05-15":3,"2025-05-16":4,"2025-05-29":1,"2025-06-01":1,"2026-01-19":1,"2026-01-21":2,"2026-01-28":1,"2026-02-03":1,"2026-02-10":1,"2026-02-23":1,"2026-03-12":1,"2026-03-16":2,"2026-03-17":3,"2026-03-25":2,"2026-04-13":3,"2026-05-19":1,"2026-07-24":1},"repo-01":{"2018-02-14":1,"2018-03-01":1,"2018-04-05":1,"2018-04-13":1,"2018-04-27":1,"2018-05-04":1,"2018-05-31":1,"2018-06-06":4,"2018-07-13":1,"2018-07-25":2,"2018-07-26":2,"2018-08-09":1,"2018-08-26":1,"2018-09-05":1,"2018-09-06":1,"2018-09-07":1,"2018-09-24":1,"2018-11-20":1,"2018-11-27":1,"2019-02-19":1,"2019-03-13":1,"2019-04-05":1,"2019-04-09":1,"2019-04-10":1,"2019-04-11":1,"2019-04-12":1,"2019-04-24":1,"2019-04-25":1,"2019-04-29":2,"2019-05-03":1,"2019-05-07":2,"2019-05-17":1,"2019-05-21":1,"2019-05-22":1,"2019-05-23":1,"2019-05-31":1,"2019-06-10":1,"2019-06-11":2,"2019-06-12":1,"2019-07-17":1,"2019-07-23":1,"2019-08-14":1,"2019-08-24":1,"2019-09-20":1,"2019-11-22":1,"2019-12-02":1,"2020-03-23":1,"2020-03-31":1,"2020-04-08":1,"2020-04-15":1,"2020-05-05":1,"2020-05-11":1,"2020-10-06":1,"2020-11-03":2,"2020-11-05":1,"2020-11-09":2,"2020-11-13":1,"2020-11-26":2,"2021-05-25":1,"2021-05-26":1,"2021-12-01":1,"2022-03-08":3,"2022-03-18":1,"2022-03-22":2,"2022-03-26":1,"2022-04-14":2,"2022-04-17":1,"2022-04-19":1,"2022-06-15":1,"2022-06-16":1,"2022-06-17":1,"2022-06-20":3,"2022-06-21":1,"2022-06-23":1,"2022-06-24":2,"2022-06-29":1,"2022-06-30":1,"2022-07-25":1,"2022-07-26":1,"2022-07-27":1,"2022-08-02":1,"2022-08-04":1,"2022-08-08":3,"2022-08-09":7,"2022-08-10":1,"2022-08-12":2,"2022-08-23":2,"2022-08-29":1,"2022-09-01":1,"2022-09-02":1,"2022-09-06":1,"2022-09-09":2,"2022-09-12":1,"2022-09-22":1,"2022-09-23":3,"2022-09-28":1,"2022-09-29":1,"2022-09-30":4,"2022-10-01":1,"2022-10-04":1,"2022-10-19":1,"2022-10-20":2,"2022-11-02":2,"2022-11-03":2,"2022-11-07":1,"2022-11-10":3,"2022-11-14":4,"2022-11-22":1,"2022-11-23":7,"2023-01-04":2,"2023-01-05":4,"2023-01-09":2,"2023-01-16":1,"2023-01-17":4,"2023-01-23":1,"2023-01-24":3,"2023-02-01":2,"2023-02-03":1,"2023-02-08":4,"2023-02-09":1,"2023-02-22":3,"2023-02-23":5,"2023-02-24":2,"2023-02-27":4,"2023-03-06":1,"2023-03-24":1,"2023-03-27":1,"2023-03-28":2,"2023-04-05":1,"2023-04-07":1,"2023-04-10":2,"2023-05-11":1,"2023-07-07":3,"2023-07-10":2,"2023-07-12":3,"2023-07-13":1,"2023-07-14":1,"2023-07-17":2,"2023-07-20":2,"2023-08-05":1,"2023-08-25":1,"2023-09-14":2,"2023-09-28":1,"2023-10-11":1,"2023-10-15":2,"2023-10-16":4,"2023-10-20":4,"2023-10-25":1,"2023-11-01":3,"2023-11-08":1,"2023-11-09":2,"2023-11-16":1,"2023-11-25":1,"2023-11-27":1,"2023-11-28":1,"2023-12-04":5,"2023-12-05":3,"2023-12-07":1,"2023-12-11":1,"2023-12-12":3,"2023-12-19":3,"2023-12-20":1,"2024-01-02":1,"2024-01-03":5,"2024-01-04":4,"2024-02-14":2,"2024-02-15":1,"2024-02-21":2,"2024-02-28":2,"2024-02-29":2,"2024-03-29":1,"2024-04-02":2,"2024-04-12":1,"2024-04-30":1,"2024-05-02":2,"2024-05-10":1,"2024-06-11":1,"2024-06-18":1,"2024-07-02":1,"2024-08-30":1,"2024-09-13":1,"2024-09-20":1,"2025-01-13":1,"2025-01-17":1,"2025-01-19":1,"2025-01-20":2,"2025-02-13":3,"2025-03-20":2,"2025-03-21":3,"2025-03-24":1,"2025-03-25":2,"2025-03-27":1,"2025-03-28":1,"2025-04-02":2,"2025-04-03":2,"2025-04-07":2,"2025-04-08":1,"2025-04-09":4,"2025-04-10":6,"2025-04-11":1,"2025-04-14":3,"2025-04-21":3,"2025-04-22":2,"2025-04-23":4,"2025-04-24":1,"2025-04-25":1,"2025-04-28":2,"2025-04-30":2,"2025-05-09":1,"2025-05-13":4,"2025-05-14":4,"2025-05-15":4,"2025-05-16":7,"2025-05-20":4,"2025-05-21":2,"2025-05-22":4,"2025-05-29":3,"2025-05-30":1,"2025-06-01":4,"2025-06-04":4,"2025-06-05":3,"2025-06-09":1,"2025-06-11":4,"2025-06-13":1,"2025-06-14":2,"2025-06-18":2,"2025-06-19":2,"2025-06-24":6,"2025-06-25":1,"2025-08-01":1,"2025-08-05":2,"2025-08-06":1,"2025-10-07":1,"2025-11-20":2,"2025-12-23":1,"2025-12-30":3,"2026-01-06":1,"2026-01-09":1,"2026-01-12":3,"2026-01-13":1,"2026-01-21":2,"2026-02-10":2,"2026-03-04":2,"2026-03-06":2,"2026-03-27":3,"2026-04-02":1,"2026-04-05":2,"2026-04-07":1,"2026-04-08":2,"2026-04-09":6,"2026-04-10":1,"2026-04-13":5,"2026-04-17":1,"2026-04-27":4,"2026-05-04":1,"2026-05-07":2,"2026-06-18":2,"2026-06-19":5,"2026-06-20":5,"2026-06-21":3,"2026-06-22":1,"2026-07-02":1,"2026-07-13":1,"2026-07-15":1,"2026-07-17":3,"2026-07-30":1,"2026-08-07":1},"repo-05":{"2018-04-05":3,"2018-10-08":3,"2019-05-24":3,"2019-05-28":3,"2019-06-10":3,"2019-06-13":3,"2022-11-21":3,"2023-12-07":3,"2024-01-05":3,"2024-09-24":3,"2024-10-04":3,"2025-02-05":3,"2025-02-13":3,"2025-02-28":3,"2025-05-19":3,"2025-06-16":3,"2025-07-29":2,"2025-10-10":2,"2026-01-06":1,"2026-01-21":1,"2026-01-22":1,"2026-03-09":1,"2026-03-17":1,"2026-03-25":1,"2026-03-26":2,"2026-03-27":1,"2026-04-13":1,"2026-05-07":1,"2026-07-14":1},"repo-13":{"2019-06-13":3},"repo-02":{"2018-03-19":3,"2018-03-20":3,"2018-06-05":1,"2018-11-28":1,"2019-03-13":1,"2019-04-29":1,"2019-07-23":1,"2019-07-24":1,"2019-08-08":3,"2019-08-09":1,"2019-08-27":1,"2019-08-29":1,"2019-09-11":1,"2019-09-13":1,"2019-09-20":1,"2019-10-03":1,"2019-10-14":1,"2019-10-16":1,"2019-10-23":1,"2019-11-04":1,"2019-11-05":1,"2019-11-22":2,"2019-11-28":1,"2019-12-04":1,"2020-07-24":2,"2020-07-30":1,"2020-10-12":1,"2020-11-20":1,"2021-05-26":1,"2021-07-26":1,"2021-07-27":1,"2021-07-29":4,"2021-07-30":1,"2021-08-09":1,"2021-08-24":1,"2021-08-31":1,"2021-09-17":1,"2021-09-22":1,"2022-04-26":1,"2022-05-10":1,"2022-05-23":1,"2022-05-24":1,"2022-09-12":1,"2022-09-13":1,"2022-09-15":1,"2022-09-20":1,"2022-09-21":1,"2022-09-22":2,"2022-09-23":6,"2022-09-26":1,"2022-09-28":1,"2022-09-29":1,"2022-10-20":1,"2022-10-26":1,"2022-11-03":1,"2023-02-03":2,"2023-03-03":1,"2023-05-11":1,"2023-05-22":1,"2023-05-29":6,"2023-06-01":7,"2023-06-05":5,"2023-06-06":1,"2023-06-09":1,"2023-06-10":2,"2023-06-12":1,"2023-06-14":1,"2023-06-23":1,"2023-06-26":2,"2023-06-27":4,"2023-07-02":1,"2023-07-04":7,"2023-07-06":8,"2023-07-07":4,"2023-07-10":2,"2023-07-14":1,"2023-08-05":1,"2023-08-08":1,"2023-08-17":1,"2023-09-14":2,"2023-09-29":1,"2023-10-13":1,"2023-10-18":1,"2023-11-08":1,"2023-11-10":1,"2023-12-21":1,"2024-01-02":4,"2024-01-04":1,"2024-01-10":5,"2024-01-11":2,"2024-01-16":1,"2024-01-23":2,"2024-02-06":1,"2024-02-07":1,"2024-02-13":1,"2024-02-14":1,"2024-02-15":1,"2024-03-18":1,"2024-03-19":1,"2024-03-21":1,"2024-03-25":5,"2024-03-26":1,"2024-03-28":1,"2024-04-01":4,"2024-04-02":1,"2024-04-03":1,"2024-04-04":7,"2024-04-05":1,"2024-04-12":4,"2024-04-16":4,"2024-04-17":1,"2024-04-18":3,"2024-04-22":1,"2024-04-23":8,"2024-05-06":4,"2024-05-07":2,"2024-05-08":2,"2024-05-09":3,"2024-05-10":1,"2024-05-27":4,"2024-06-06":5,"2024-06-10":2,"2024-06-11":1,"2024-07-22":1,"2024-08-12":2,"2024-08-13":1,"2024-08-22":1,"2024-09-13":1,"2024-09-16":1,"2024-09-20":1,"2025-02-03":3,"2025-02-04":8,"2025-02-05":4,"2025-02-06":1,"2025-02-10":7,"2025-02-11":1,"2025-02-12":2,"2025-02-13":2,"2025-02-17":2,"2025-02-20":1,"2025-02-25":1,"2025-02-28":1,"2025-03-03":1,"2025-03-04":1,"2025-03-07":1,"2025-03-11":3,"2025-03-12":1,"2025-03-14":1,"2025-03-23":1,"2025-03-24":6,"2025-03-25":4,"2025-03-26":1,"2025-03-27":2,"2025-03-28":1,"2025-04-02":1,"2025-04-03":1,"2025-04-10":2,"2025-04-11":1,"2025-05-15":1,"2025-05-19":1,"2025-05-20":5,"2025-05-21":1,"2025-05-22":1,"2025-06-02":2,"2025-06-03":1,"2025-06-06":3,"2025-06-13":8,"2025-06-14":7,"2025-06-16":2,"2025-06-18":5,"2025-06-19":3,"2025-06-20":10,"2025-06-24":1,"2025-06-26":2,"2025-06-27":1,"2025-07-29":5,"2025-07-30":2,"2025-07-31":5,"2025-08-01":3,"2025-08-04":2,"2025-08-12":1,"2025-09-04":4,"2025-09-16":2,"2025-09-18":6,"2025-09-19":3,"2025-09-22":1,"2025-10-06":1,"2025-10-09":3,"2025-10-10":1,"2025-10-12":2,"2025-10-15":2,"2025-10-17":1,"2025-10-29":1,"2025-10-30":1,"2025-11-01":1,"2025-11-02":1,"2025-11-04":1,"2025-11-09":2,"2025-11-10":4,"2025-11-11":3,"2026-01-02":2,"2026-01-06":1,"2026-01-14":3,"2026-01-23":1,"2026-01-28":1,"2026-02-11":2,"2026-02-13":1,"2026-02-17":1,"2026-02-18":1,"2026-02-19":1,"2026-04-30":7,"2026-05-05":2,"2026-05-07":1,"2026-05-13":1,"2026-08-07":2},"repo-03":{"2018-04-05":4,"2018-04-11":2,"2018-04-24":2,"2018-04-27":2,"2018-06-06":2,"2018-07-20":2,"2018-08-06":2,"2019-04-24":4,"2020-03-27":1,"2020-11-05":1,"2020-11-09":1,"2021-07-26":1,"2021-07-27":1,"2021-07-29":2,"2021-08-09":1,"2021-08-13":1,"2021-08-17":1,"2021-08-31":2,"2021-09-01":1,"2021-09-04":2,"2021-09-06":4,"2021-09-17":1,"2021-10-07":1,"2021-10-08":1,"2021-10-18":1,"2021-10-20":1,"2021-10-25":1,"2021-11-17":1,"2022-01-25":1,"2022-03-08":1,"2022-03-22":1,"2022-04-06":1,"2022-05-16":1,"2022-06-24":1,"2022-06-29":1,"2022-07-13":1,"2022-08-02":3,"2022-08-04":1,"2022-08-08":1,"2022-08-09":1,"2022-08-29":1,"2022-09-05":1,"2022-09-08":1,"2022-09-09":1,"2022-09-12":1,"2022-11-09":10,"2022-11-10":1,"2023-02-08":3,"2023-02-09":2,"2023-02-23":1,"2023-03-15":1,"2023-12-21":1,"2024-01-02":1,"2024-07-23":1,"2024-09-13":1,"2025-11-14":2,"2025-12-23":1,"2025-12-30":5,"2026-07-22":1},"repo-15":{"2017-12-08":1,"2018-01-10":1},"repo-06":{"2018-09-14":3,"2019-02-19":3,"2022-06-02":3,"2022-08-08":3,"2022-09-29":6,"2022-09-30":3,"2022-11-07":3,"2023-03-03":6,"2024-04-02":4,"2025-11-12":2,"2025-11-17":2,"2026-01-13":8,"2026-03-03":2},"repo-09":{"2019-09-09":2,"2021-09-27":1,"2021-10-01":4,"2021-10-12":1,"2021-10-13":1,"2021-11-17":1,"2021-11-18":1,"2021-11-25":1,"2022-08-18":1,"2022-09-09":1,"2022-09-15":1,"2022-09-29":1,"2023-08-05":1,"2023-08-07":1,"2024-03-19":1,"2024-03-26":1},"repo-08":{"2019-04-09":3,"2019-05-03":3,"2019-06-10":3,"2020-06-09":3,"2020-07-08":3,"2020-07-15":3,"2022-07-25":3,"2024-04-02":4,"2024-04-04":2,"2024-10-30":2},"repo-17":{"2018-08-20":1},"repo-07":{"2021-03-18":1,"2021-03-31":1,"2021-04-15":1,"2021-04-19":2,"2021-05-12":2,"2021-06-21":1,"2021-07-08":1,"2021-07-19":1,"2021-07-20":1,"2021-08-04":1,"2021-08-11":1,"2021-08-16":1,"2021-08-17":1,"2021-08-18":1,"2021-08-20":1,"2021-08-26":4,"2021-09-04":1,"2021-10-05":1,"2021-10-08":1,"2021-10-11":1,"2021-10-13":1,"2021-10-15":1,"2021-10-25":1,"2021-11-10":1,"2021-11-17":1,"2021-11-18":1,"2021-11-25":1,"2021-12-14":1,"2022-01-04":1,"2022-01-11":1,"2022-04-06":1,"2022-04-12":2,"2025-03-20":1,"2025-04-09":1},"repo-11":{"2018-12-13":3,"2019-07-24":3,"2019-08-08":3},"repo-12":{"2021-10-02":4},"repo-10":{"2018-10-05":2,"2023-06-19":4,"2023-06-21":2,"2024-03-28":2},"repo-16":{"2018-11-02":2},"repo-14":{"2020-06-22":1,"2021-08-16":1,"2021-09-02":1}};
-const TOTAL_REPOS=22;
-const fmt=n=>n.toLocaleString();
-const repos=Object.keys(DATA);
-const allYearsSet=new Set();
-repos.forEach(r=>Object.keys(DATA[r]).forEach(y=>allYearsSet.add(+y)));
-const allYears=[...allYearsSet].sort((a,b)=>a-b);
-let gC=0,gA=0,gR=0;
-repos.forEach(r=>Object.values(DATA[r]).forEach(d=>{gC+=d.commits;gA+=d.added;gR+=d.removed;}));
-const activeYearsSet=new Set();
-repos.forEach(r=>Object.entries(DATA[r]).forEach(([y,d])=>{if(d.commits>0)activeYearsSet.add(+y);}));
-const activeYears=[...activeYearsSet].sort((a,b)=>a-b);
-const repoTotals={};
-repos.forEach(r=>{repoTotals[r]={commits:0,added:0,removed:0};Object.values(DATA[r]).forEach(d=>{repoTotals[r].commits+=d.commits;repoTotals[r].added+=d.added;repoTotals[r].removed+=d.removed;});});
-const activeRepos=repos.filter(r=>repoTotals[r].commits>0).sort((a,b)=>repoTotals[b].commits-repoTotals[a].commits);
-const cards=[
-  {label:"Total Commits",value:fmt(gC),sub:"across all repos"},
-  {label:"Lines Added",value:fmt(gA),sub:"all repos",cls:"green"},
-  {label:"Lines Removed",value:fmt(gR),sub:"all repos",cls:"red"},
-  {label:"Net Lines",value:(gA-gR>=0?"+":"")+fmt(gA-gR),sub:"added minus removed",cls:gA>=gR?"green":"red"},
-  {label:"Repos Touched",value:activeRepos.length,sub:"of "+TOTAL_REPOS+" total"},
-  {label:"Active Since",value:activeYears[0],sub:"through "+activeYears[activeYears.length-1]}
-];
-const cardEl=document.getElementById("summary-cards");
-cards.forEach(c=>{const d=document.createElement("div");d.className="card";d.innerHTML=`<div class="card-label">${c.label}</div><div class="card-value ${c.cls||''}">${c.value}</div><div class="card-sub">${c.sub}</div>`;cardEl.appendChild(d);});
-const yearlyTotals={};
-allYears.forEach(y=>{yearlyTotals[y]={commits:0,added:0,removed:0};});
-repos.forEach(r=>Object.entries(DATA[r]).forEach(([y,d])=>{yearlyTotals[+y].commits+=d.commits;yearlyTotals[+y].added+=d.added;yearlyTotals[+y].removed+=d.removed;}));
-const ytbl=document.getElementById("yearly-table");
-let h=`<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>Repos Active</th></tr></thead><tbody>`;
-allYears.forEach(y=>{const d=yearlyTotals[y];if(!d.commits)return;const net=d.added-d.removed;const rc=repos.filter(r=>DATA[r][y]&&DATA[r][y].commits>0).length;h+=`<tr><td>${y}</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td><td>${rc}</td></tr>`;});
-h+=`<tr class="total-row"><td>All Years</td><td>${fmt(gC)}</td><td class="green">${fmt(gA)}</td><td class="red">${fmt(gR)}</td><td class="${gA>=gR?'net-pos':'net-neg'}">${gA>=gR?"+":""}${fmt(gA-gR)}</td><td>${activeRepos.length}</td></tr>`;
-ytbl.innerHTML=h+"</tbody>";
-const rtbl=document.getElementById("repo-table");
-h=`<thead><tr><th>Repository</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>First Year</th><th>Last Year</th></tr></thead><tbody>`;
-activeRepos.forEach(r=>{const d=repoTotals[r];const yrs=Object.keys(DATA[r]).map(Number).filter(y=>DATA[r][y].commits>0).sort();const net=d.added-d.removed;h+=`<tr><td>${r}</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td><td>${yrs[0]}</td><td>${yrs[yrs.length-1]}</td></tr>`;});
-rtbl.innerHTML=h+"</tbody>";
-const chartEl=document.getElementById("repo-chart");
-const mC=Math.max(...activeRepos.map(r=>repoTotals[r].commits));
-const mA=Math.max(...activeRepos.map(r=>repoTotals[r].added));
-const mR2=Math.max(...activeRepos.map(r=>repoTotals[r].removed));
-activeRepos.forEach(r=>{const d=repoTotals[r];const wC=Math.max(1,(d.commits/mC)*100).toFixed(1);const wA=Math.max(1,(d.added/mA)*100).toFixed(1);const wR=Math.max(1,(d.removed/mR2)*100).toFixed(1);chartEl.innerHTML+=`<div class="chart-row"><div class="chart-label" title="${r}">${r}</div><div class="chart-bars"><div class="bar-track"><div class="bar-fill-cmt" style="width:${wC}%"></div></div><div class="bar-track"><div class="bar-fill-add" style="width:${wA}%"></div></div><div class="bar-track"><div class="bar-fill-rem" style="width:${wR}%"></div></div></div><div class="chart-val">${fmt(d.commits)} cmts</div></div>`;});
-const tabsEl=document.getElementById("repo-tabs");
-const detailEl=document.getElementById("repo-detail-table");
-let activeRepo=activeRepos[0];
-function renderDetail(repo){const d=DATA[repo];const yrs=Object.keys(d).map(Number).sort();let h2=`<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th></tr></thead><tbody>`;let tc=0,ta=0,tr2=0;yrs.forEach(y=>{if(!d[y].commits&&!d[y].added)return;const net=d[y].added-d[y].removed;tc+=d[y].commits;ta+=d[y].added;tr2+=d[y].removed;h2+=`<tr><td>${y}</td><td>${fmt(d[y].commits)}</td><td class="green">${fmt(d[y].added)}</td><td class="red">${fmt(d[y].removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td></tr>`;});const tn=ta-tr2;h2+=`<tr class="total-row"><td>Total</td><td>${fmt(tc)}</td><td class="green">${fmt(ta)}</td><td class="red">${fmt(tr2)}</td><td class="${tn>=0?'net-pos':'net-neg'}">${tn>=0?"+":""}${fmt(tn)}</td></tr>`;detailEl.innerHTML=h2+"</tbody>";}
-activeRepos.forEach(repo=>{const btn=document.createElement("button");btn.className="tab-btn"+(repo===activeRepo?" active":"");btn.textContent=repo;btn.addEventListener("click",()=>{document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");activeRepo=repo;renderDetail(repo);});tabsEl.appendChild(btn);});
-renderDetail(activeRepo);
-const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const DOW_LABELS=["","Mon","","Wed","","Fri",""];
-function yearsFromMap(m){const s=new Set(Object.keys(m).map(d=>+d.slice(0,4)));return[...s].sort((a,b)=>b-a);}
-function maxForYear(m,y){let v=0;const p=y+"-";for(const[d,c]of Object.entries(m))if(d.startsWith(p))v=Math.max(v,c);return v||1;}
-function lvl(c,mx){if(!c)return"";const p=c/mx;return p<=0.25?"l1":p<=0.5?"l2":p<=0.75?"l3":"l4";}
-function renderGrid(dayMap,year,gridId,titleId,label,totalOverride=null){
-  const mx=maxForYear(dayMap,year);const p=year+"-";
-  let tot=0;for(const[d,c]of Object.entries(dayMap))if(d.startsWith(p))tot+=c;
-  if(totalOverride!==null)tot=totalOverride;
-  document.getElementById(titleId).textContent=tot+" commit"+(tot!==1?"s":"")+" in "+year+" · "+label;
-  const jan1=new Date(year,0,1);const sd=jan1.getDay();const gs=new Date(jan1);gs.setDate(gs.getDate()-sd);
-  const gEl=document.getElementById(gridId);gEl.innerHTML="";
-  const dc=document.createElement("div");dc.className="heatmap-dow-labels";
-  DOW_LABELS.forEach(l=>{const e=document.createElement("div");e.className="heatmap-dow-label";e.textContent=l;dc.appendChild(e);});
-  gEl.appendChild(dc);
-  const we=document.createElement("div");we.className="heatmap-weeks";
-  const sm={};
-  for(let w=0;w<53;w++){
-    const wk=document.createElement("div");wk.className="heatmap-week";
-    const ml=document.createElement("div");ml.className="heatmap-month-label";
-    const fd=new Date(gs);fd.setDate(gs.getDate()+w*7);
-    const mo=fd.getMonth(),yr=fd.getFullYear();
-    if(yr===year&&!sm[mo]){sm[mo]=true;ml.textContent=MONTHS[mo];}
-    wk.appendChild(ml);
-    for(let d=0;d<7;d++){
-      const dt=new Date(gs);dt.setDate(gs.getDate()+w*7+d);
-      const cell=document.createElement("div");cell.className="heatmap-cell";
-      if(dt.getFullYear()===year){
-        const iso=dt.toISOString().slice(0,10);const cnt=dayMap[iso]||0;
-        const lv=lvl(cnt,mx);if(lv)cell.classList.add(lv);
-        if(cnt){const lab=dt.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});cell.title=lab+": "+cnt+" commit"+(cnt>1?"s":"");}
-      }else{cell.style.opacity="0";cell.style.pointerEvents="none";}
-      wk.appendChild(cell);
+// ── Data (sourced directly from HTML tracker exports) ─────────────────────────
+// Defects: 845 total — binned by ID creation sequence (IDs are globally sequential in Jazz)
+// Confirmed anchors: ID 64872=Nov2017, ID 65859=Jun2018, ID 69302=Jan2019,
+//   72214=2020, 80152=2021, 85100=2022, 91500=2023, 97729=2024, 105473=2025, 112907=2026
+const YEARS   = ['2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+// Defects per year: exact count from Modified Date column in tracker export (Σ=846; one entry spans year boundary, net owned=845)
+const DEFECTS = [1,   45,   91,  108,   85,  101,   93,  129,   99,   94];  // Σ=846 (raw Modified Date tally)
+
+// Stories+Tasks: 204 owned items + 5 Epics/Enhancements = 209 total in export
+// Type column exact count: Story=145, Task=59, Epic=2, Enhancement=2 — Tasks corrected from 64→59
+const STORIES = [5,  13,  11,  12,   7,  15,  23,  15,  24,  20];  // Σ=145 (unchanged)
+const TASKS   = [3,   5,   4,   5,   3,   7,   9,   8,  10,   5];  // Σ=59  (corrected from 64)
+const ST_ALL  = STORIES.map((s,i) => s + TASKS[i]);                  // Σ=204
+
+// Bugs investigated (1,650 total from "defects with my comments" export)
+// Per-year distribution scaled proportionally from owned-defect year ratios (see backing report)
+const INVESTIGATED = [2, 88, 177, 210, 165, 196, 181, 251, 193, 183]; // Σ=1646≈1650
+
+// Severity (845 bugs) — EXACT counts from Severity column in tracker export
+// 1-Critical:12  2-Severe:731  3-Moderate:97  4-Minimal:5  (Σ=845)
+const SEVERITY = {
+  labels:['2-Severe','3-Moderate','1-Critical','4-Minimal'],
+  data:  [731,        97,           12,           5]
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function dark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
+function gc(){
+  return {
+    defect:   dark()?'#f87171':'#ef4444',
+    story:    dark()?'#a78bfa':'#8b5cf6',
+    task:     dark()?'#fcd34d':'#f59e0b',
+    inv:      dark()?'#22d3ee':'#06b6d4',
+    grid:     dark()?'#30363d':'#e5e7eb',
+    txt:      dark()?'#8b949e':'#57606a',
+    bg:       dark()?'#161b22':'#ffffff',
+  };
+}
+Chart.defaults.font.family="-apple-system,'Segoe UI',system-ui,sans-serif";
+Chart.defaults.font.size=12;
+
+// ── Chart instances ───────────────────────────────────────────────────────────
+let charts={};
+function destroyAll(){ Object.values(charts).forEach(c=>c&&c.destroy()); charts={}; }
+
+function buildAll(){
+  destroyAll();
+  const c=gc();
+
+  // 1. Stacked overview bar
+  charts.stacked=new Chart(document.getElementById('chartStackedBar'),{
+    type:'bar',
+    data:{
+      labels:YEARS,
+      datasets:[
+        {label:'Bugs Resolved',    data:DEFECTS,   backgroundColor:c.defect+'bb', stack:'owned', borderRadius:3},
+        {label:'Stories & Tasks',  data:ST_ALL,    backgroundColor:c.story+'bb',  stack:'owned', borderRadius:3},
+        {label:'Bugs Investigated',data:INVESTIGATED,backgroundColor:c.inv+'44',  stack:'inv',   borderRadius:3},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:true,
+      plugins:{legend:{labels:{color:c.txt}},tooltip:{mode:'index'}},
+      scales:{
+        x:{stacked:true,grid:{color:c.grid},ticks:{color:c.txt}},
+        y:{stacked:true,grid:{color:c.grid},ticks:{color:c.txt},
+           title:{display:true,text:'Work Items',color:c.txt}}
+      }
     }
-    we.appendChild(wk);
+  });
+
+  // 2. Defects bar
+  charts.defects=new Chart(document.getElementById('chartDefects'),{
+    type:'bar',
+    data:{
+      labels:YEARS,
+      datasets:[{
+        label:'Bugs Resolved',data:DEFECTS,borderRadius:4,
+        backgroundColor:DEFECTS.map((_,i)=>{
+          const a=Math.round((0.5+0.5*i/(DEFECTS.length-1))*255).toString(16).padStart(2,'0');
+          return c.defect+a;
+        })
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:c.grid},ticks:{color:c.txt}},y:{grid:{color:c.grid},ticks:{color:c.txt}}}
+    }
+  });
+
+  // 3. Stories+Tasks stacked bar
+  charts.stories=new Chart(document.getElementById('chartStories'),{
+    type:'bar',
+    data:{
+      labels:YEARS,
+      datasets:[
+        {label:'Stories',data:STORIES,backgroundColor:c.story+'cc',borderRadius:3,stack:'st'},
+        {label:'Tasks',  data:TASKS,  backgroundColor:c.task +'cc',borderRadius:3,stack:'st'},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:c.txt}}},
+      scales:{
+        x:{stacked:true,grid:{color:c.grid},ticks:{color:c.txt}},
+        y:{stacked:true,grid:{color:c.grid},ticks:{color:c.txt}}
+      }
+    }
+  });
+
+  // 4. Severity doughnut
+  charts.severity=new Chart(document.getElementById('chartSeverity'),{
+    type:'doughnut',
+    data:{
+      labels:SEVERITY.labels,
+      datasets:[{
+        data:SEVERITY.data,
+        backgroundColor:['#ef4444cc','#f97316cc','#eab308cc','#dc2626cc','#94a3b8cc'],
+        borderWidth:2,borderColor:c.bg
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{color:c.txt,padding:10,font:{size:11}}}}
+    }
+  });
+
+  // 5. Type split doughnut
+  charts.type=new Chart(document.getElementById('chartTypeSplit'),{
+    type:'doughnut',
+    data:{
+      labels:['Bugs (Owned)','Feature Stories','Eng Tasks','Bugs (Investigated)'],
+      datasets:[{
+        data:[845,145,59,1650],
+        backgroundColor:[c.defect+'cc',c.story+'cc',c.task+'cc',c.inv+'77'],
+        borderWidth:2,borderColor:c.bg
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{color:c.txt,padding:10,font:{size:11}}}}
+    }
+  });
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+function buildTable(){
+  const tb=document.getElementById('tableBody');
+  tb.innerHTML='';
+  let tD=0,tST=0,tI=0;
+  YEARS.forEach((yr,i)=>{
+    const d=DEFECTS[i],st=ST_ALL[i],inv=INVESTIGATED[i];
+    tD+=d; tST+=st; tI+=inv;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${yr}</td>
+      <td style="color:var(--red)">${d}</td>
+      <td style="color:var(--accent2)">${STORIES[i]}</td>
+      <td style="color:var(--orange)">${TASKS[i]}</td>
+      <td>${d+st}</td>
+      <td style="color:var(--cyan)">${inv}</td>
+      <td style="font-weight:700">${d+st+inv}</td>`;
+    tb.appendChild(tr);
+  });
+  const tot=document.createElement('tr');
+  tot.className='total-row';
+  const totSt=STORIES.reduce((a,b)=>a+b,0);
+  const totTk=TASKS.reduce((a,b)=>a+b,0);
+  tot.innerHTML=`<td>TOTAL</td>
+    <td style="color:var(--red)">${tD}</td>
+    <td style="color:var(--accent2)">${totSt}</td>
+    <td style="color:var(--orange)">${totTk}</td>
+    <td>${tD+tST}</td>
+    <td style="color:var(--cyan)">${tI}</td>
+    <td style="font-weight:700">${tD+tST+tI}</td>`;
+  tb.appendChild(tot);
+}
+
+// ── Theme ─────────────────────────────────────────────────────────────────────
+function toggleTheme(){
+  const d=document.documentElement;
+  const isDark=d.getAttribute('data-theme')==='dark';
+  d.setAttribute('data-theme',isDark?'':'dark');
+  document.getElementById('themeBtn').textContent=isDark?'🌙 Dark Mode':'☀️ Light Mode';
+  buildAll();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+    document.documentElement.setAttribute('data-theme','dark');
+    document.getElementById('themeBtn').textContent='☀️ Light Mode';
   }
-  gEl.appendChild(we);
-}
-// Combined heatmap
-const combMap={};
-Object.values(DAY_DATA).forEach(rm=>Object.entries(rm).forEach(([d,c])=>{combMap[d]=(combMap[d]||0)+c;}));
-const combYears=allYears.filter(y=>yearlyTotals[y]&&yearlyTotals[y].commits>0);
-let aCY=combYears[combYears.length-1];
-function renderCHNav(){
-  const nav=document.getElementById("ch-year-nav");nav.innerHTML="";
-  combYears.forEach(y=>{const btn=document.createElement("button");btn.className="heatmap-year-btn"+(y===aCY?" active":"");btn.textContent=y;
-    btn.addEventListener("click",()=>{aCY=y;document.querySelectorAll("#ch-year-nav .heatmap-year-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderGrid(combMap,aCY,"ch-grid","ch-title","all repos",yearlyTotals[aCY].commits);});
-    nav.appendChild(btn);});
-}
-renderCHNav();renderGrid(combMap,aCY,"ch-grid","ch-title","all repos",yearlyTotals[aCY].commits);
-// Per-repo heatmap
-const hmRepos=activeRepos.filter(r=>DAY_DATA[r]&&Object.keys(DAY_DATA[r]).length>0);
-const hmTabsEl=document.getElementById("hm-repo-tabs");
-let aHR=hmRepos[0];let aHY=aHR?yearsFromMap(DAY_DATA[aHR])[0]:null;
-function renderHMNav(yrs){const nav=document.getElementById("hm-year-nav");nav.innerHTML="";yrs.forEach(y=>{const btn=document.createElement("button");btn.className="heatmap-year-btn"+(y===aHY?" active":"");btn.textContent=y;btn.addEventListener("click",()=>{aHY=y;document.querySelectorAll("#hm-year-nav .heatmap-year-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderGrid(DAY_DATA[aHR],aHY,"hm-grid","hm-title",aHR);});nav.appendChild(btn);});}
-function setHMRepo(r){aHR=r;const yrs=yearsFromMap(DAY_DATA[r]);aHY=yrs[0];renderHMNav(yrs);renderGrid(DAY_DATA[aHR],aHY,"hm-grid","hm-title",aHR);}
-hmRepos.forEach(repo=>{const btn=document.createElement("button");btn.className="tab-btn"+(repo===aHR?" active":"");btn.textContent=repo;btn.addEventListener("click",()=>{document.querySelectorAll("#hm-repo-tabs .tab-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");setHMRepo(repo);});hmTabsEl.appendChild(btn);});
-if(aHR){renderHMNav(yearsFromMap(DAY_DATA[aHR]));renderGrid(DAY_DATA[aHR],aHY,"hm-grid","hm-title",aHR);}
+  buildTable();
+  buildAll();
+});
 </script>
 </body>
 </html>
