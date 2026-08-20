@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Abhinav Shrivastava — Git Contributions</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; background: #ffffff; color: #1f2328; }
+  .wrapper { max-width: 980px; margin: 0 auto; padding: 32px 20px 56px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 24px; }
+
+  /* Cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .card { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px; }
+  .card-label { font-size: 11px; color: #57606a; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+  .card-value { font-size: 24px; font-weight: 700; }
+  .card-sub { font-size: 11px; color: #57606a; margin-top: 1px; }
+  .green { color: #1a7f37; }
+  .red   { color: #cf222e; }
+
+  /* Section */
+  .section-title { font-size: 15px; font-weight: 600; margin: 28px 0 10px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
+
+  /* Table */
+  .tbl-wrap { overflow-x: auto; margin-bottom: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f7f8fa; border-bottom: 2px solid #e5e7eb; padding: 7px 10px; text-align: right; font-weight: 600; color: #57606a; white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { border-bottom: 1px solid #e5e7eb; padding: 6px 10px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td:first-child { text-align: left; font-weight: 500; }
+  tr:hover td { background: #f7f8fa; }
+  tr.total-row td { font-weight: 700; background: #f0f3ff; }
+  .net-pos { color: #1a7f37; }
+  .net-neg { color: #cf222e; }
+
+  /* Tabs */
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tab-btn { padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 4px; background: #f7f8fa; color: #1f2328; cursor: pointer; font-size: 12px; transition: background .1s; }
+  .tab-btn.active { background: #3b82d4; color: #fff; border-color: #3b82d4; }
+  .tab-btn:hover:not(.active) { background: #e5e7eb; }
+
+  /* Horizontal bar chart */
+  .chart-wrap { margin-bottom: 32px; }
+  .chart-row { display: flex; align-items: center; margin-bottom: 5px; gap: 8px; }
+  .chart-label { width: 120px; font-size: 12px; text-align: right; color: #57606a; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chart-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .bar-track { height: 8px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+  .bar-fill-add  { height: 100%; background: #1a7f37; border-radius: 3px; }
+  .bar-fill-rem  { height: 100%; background: #cf222e; border-radius: 3px; }
+  .bar-fill-cmt  { height: 100%; background: #3b82d4; border-radius: 3px; }
+  .chart-val { font-size: 11px; color: #57606a; min-width: 50px; }
+  .chart-legend { display: flex; gap: 16px; font-size: 11px; color: #57606a; margin-bottom: 10px; }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+
+  /* Heatmap calendar */
+  .heatmap-outer { margin-bottom: 8px; }
+  .heatmap-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .heatmap-title { font-size: 13px; font-weight: 600; color: #1f2328; }
+  .heatmap-year-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  .heatmap-year-btn { padding: 3px 10px; border: 1px solid #e5e7eb; border-radius: 4px; background: #f7f8fa; color: #57606a; cursor: pointer; font-size: 11px; }
+  .heatmap-year-btn.active { background: #3b82d4; color: #fff; border-color: #3b82d4; }
+  .heatmap-year-btn:hover:not(.active) { background: #e5e7eb; }
+  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
+  .heatmap-grid { display: inline-flex; gap: 0; }
+  .heatmap-dow-labels { display: flex; flex-direction: column; gap: 0; margin-right: 4px; padding-top: 18px; }
+  .heatmap-dow-label { height: 11px; font-size: 9px; color: #57606a; text-align: right; line-height: 11px; margin-bottom: 2px; width: 22px; }
+  .heatmap-weeks { display: flex; gap: 2px; }
+  .heatmap-week { display: flex; flex-direction: column; gap: 2px; }
+  .heatmap-month-row { height: 18px; display: flex; gap: 2px; margin-bottom: 2px; }
+  .heatmap-month-label { font-size: 9px; color: #57606a; height: 18px; line-height: 18px; width: 11px; text-align: center; }
+  .heatmap-cell { width: 11px; height: 11px; border-radius: 2px; background: #ebedf0; cursor: default; }
+  .heatmap-cell[title]:hover { outline: 1px solid #57606a; }
+  .heatmap-cell.l1 { background: #9be9a8; }
+  .heatmap-cell.l2 { background: #40c463; }
+  .heatmap-cell.l3 { background: #30a14e; }
+  .heatmap-cell.l4 { background: #216e39; }
+  .heatmap-foot { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #57606a; margin-top: 6px; }
+  .heatmap-foot-legend { display: flex; gap: 2px; align-items: center; }
+  .heatmap-foot-cell { width: 11px; height: 11px; border-radius: 2px; }
+
+  footer { text-align: center; font-size: 11px; color: #57606a; border-top: 1px solid #e5e7eb; padding-top: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <h1>Abhinav Shrivastava — Git Contributions</h1>
+  <p class="subtitle">Personal stats · Commits · Lines Added · Lines Removed · per year &amp; per repository &nbsp;|&nbsp; abshriva@in.ibm.com &nbsp;|&nbsp; Generated: <span id="gen-date"></span></p>
+
+  <div id="summary-cards" class="cards"></div>
+
+  <div class="section-title">Contributions by Year — All Repos Combined</div>
+  <div class="tbl-wrap"><table id="yearly-table"></table></div>
+
+  <div class="section-title">Contributions by Repository — All-Time Totals</div>
+  <div class="chart-wrap">
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#3b82d4"></span>Commits</span>
+      <span><span class="legend-dot" style="background:#1a7f37"></span>Lines Added</span>
+      <span><span class="legend-dot" style="background:#cf222e"></span>Lines Removed</span>
+    </div>
+    <div id="repo-chart"></div>
+  </div>
+  <div class="tbl-wrap"><table id="repo-table"></table></div>
+
+  <div class="section-title">Per-Repository Year-by-Year Breakdown</div>
+  <div class="tabs" id="repo-tabs"></div>
+  <div class="tbl-wrap"><table id="repo-detail-table"></table></div>
+
+  <div class="section-title">Contribution Heatmap — Daily Activity per Repository</div>
+  <div class="tabs" id="heatmap-repo-tabs"></div>
+  <div class="heatmap-outer" id="heatmap-outer">
+    <div class="heatmap-header">
+      <div class="heatmap-title" id="heatmap-title"></div>
+      <div class="heatmap-year-nav" id="heatmap-year-nav"></div>
+    </div>
+    <div class="heatmap-scroll">
+      <div class="heatmap-grid" id="heatmap-grid"></div>
+    </div>
+    <div class="heatmap-foot">
+      Less
+      <div class="heatmap-foot-legend">
+        <div class="heatmap-foot-cell" style="background:#ebedf0"></div>
+        <div class="heatmap-foot-cell heatmap-cell l1"></div>
+        <div class="heatmap-foot-cell heatmap-cell l2"></div>
+        <div class="heatmap-foot-cell heatmap-cell l3"></div>
+        <div class="heatmap-foot-cell heatmap-cell l4"></div>
+      </div>
+      More
+    </div>
+  </div>
+</div>
+
+<footer>Made with IBM Bob</footer>
+
+<script>
+document.getElementById("gen-date").textContent =
+  new Date().toLocaleDateString("en-US", {day:"numeric", month:"long", year:"numeric"});
+
+/* ── Yearly aggregated data ── */
+const DATA = {
+  block: {
+    2018:{commits:24,added:885,removed:228},
+    2019:{commits:30,added:1378,removed:1031},
+    2020:{commits:15,added:634,removed:81},
+    2021:{commits:3,added:16,removed:14},
+    2022:{commits:85,added:3382,removed:1310},
+    2023:{commits:107,added:6883,removed:2748},
+    2024:{commits:33,added:395,removed:441},
+    2025:{commits:129,added:5212,removed:2473},
+    2026:{commits:67,added:20266,removed:3475}
+  },
+  api: {
+    2018:{commits:1,added:24,removed:0},
+    2021:{commits:19,added:905,removed:84},
+    2022:{commits:14,added:187,removed:97},
+    2023:{commits:5,added:58,removed:27},
+    2024:{commits:6,added:32,removed:14},
+    2025:{commits:13,added:132,removed:87},
+    2026:{commits:20,added:2841,removed:726}
+  },
+  ui: {
+    2020:{commits:47,added:0,removed:0},
+    2021:{commits:4,added:17,removed:15}
+  },
+  compute: {
+    2018:{commits:8,added:55,removed:45},
+    2019:{commits:23,added:3188,removed:818},
+    2020:{commits:5,added:206,removed:82},
+    2021:{commits:13,added:144,removed:134},
+    2022:{commits:23,added:1349,removed:180},
+    2023:{commits:70,added:3488,removed:1910},
+    2024:{commits:97,added:2623,removed:993},
+    2025:{commits:173,added:3248,removed:1942},
+    2026:{commits:27,added:3928,removed:1086}
+  },
+  clerk: {
+    2019:{commits:3,added:0,removed:3}
+  },
+  image: {
+    2018:{commits:3,added:42,removed:21},
+    2019:{commits:3,added:24,removed:3},
+    2022:{commits:18,added:42,removed:18},
+    2023:{commits:6,added:90,removed:36},
+    2024:{commits:4,added:36,removed:36},
+    2025:{commits:4,added:10,removed:10},
+    2026:{commits:10,added:38,removed:18}
+  },
+  monitor: {
+    2019:{commits:9,added:219,removed:57},
+    2020:{commits:9,added:105,removed:69},
+    2022:{commits:3,added:27,removed:0},
+    2024:{commits:8,added:68,removed:58}
+  },
+  install: {
+    2019:{commits:2,added:90,removed:10},
+    2021:{commits:10,added:24,removed:10},
+    2022:{commits:4,added:62,removed:8},
+    2023:{commits:2,added:16,removed:7},
+    2024:{commits:2,added:9,removed:2}
+  },
+  ras: {
+    2018:{commits:3,added:6,removed:3},
+    2019:{commits:6,added:9,removed:6}
+  },
+  discovery: {
+    2018:{commits:16,added:262,removed:80},
+    2019:{commits:4,added:6,removed:26},
+    2020:{commits:3,added:30,removed:15},
+    2021:{commits:23,added:251,removed:94},
+    2022:{commits:30,added:418,removed:344},
+    2023:{commits:8,added:53,removed:40},
+    2024:{commits:3,added:1,removed:15},
+    2025:{commits:8,added:32,removed:35},
+    2026:{commits:1,added:0,removed:2}
+  },
+  security: {
+    2021:{commits:4,added:16,removed:16}
+  },
+  "powervc-multinode": {
+    2021:{commits:33,added:2326,removed:691},
+    2022:{commits:5,added:191,removed:30},
+    2025:{commits:2,added:10,removed:4}
+  },
+  fvt: {
+    2017:{commits:1,added:38,removed:10},
+    2018:{commits:1,added:222,removed:0}
+  },
+  ttv: {
+    2018:{commits:2,added:4,removed:4}
+  },
+  svt: {
+    2018:{commits:2,added:538,removed:584},
+    2023:{commits:6,added:1404,removed:960},
+    2024:{commits:2,added:4,removed:2}
+  },
+  build: {
+    2018:{commits:6,added:6,removed:6},
+    2019:{commits:12,added:12,removed:12},
+    2022:{commits:3,added:3,removed:3},
+    2023:{commits:3,added:3,removed:3},
+    2024:{commits:9,added:9,removed:9},
+    2025:{commits:19,added:19,removed:19},
+    2026:{commits:13,added:4365,removed:57}
+  }
+};
+
+/* ── Per-day commit data for heatmap ── */
+const DAY_DATA = {
+  "api": {"2018-08-06":1,"2021-07-26":1,"2021-08-18":1,"2021-08-19":1,"2021-08-24":1,"2021-08-26":1,"2021-09-03":1,"2021-09-04":1,"2021-09-06":1,"2021-10-07":1,"2021-10-11":1,"2021-10-18":1,"2021-10-20":4,"2021-10-25":1,"2021-11-17":1,"2021-11-22":1,"2021-11-25":1,"2022-03-18":1,"2022-04-06":1,"2022-08-02":1,"2022-09-15":1,"2022-10-20":2,"2022-11-09":3,"2022-11-10":3,"2022-11-17":1,"2022-11-23":1,"2023-01-04":1,"2023-01-09":1,"2023-02-23":2,"2023-03-17":1,"2024-05-02":3,"2024-05-06":1,"2024-07-01":1,"2024-09-13":1,"2025-02-06":2,"2025-02-10":1,"2025-05-14":1,"2025-05-15":3,"2025-05-16":4,"2025-05-29":1,"2025-06-01":1,"2026-01-19":1,"2026-01-21":2,"2026-01-28":1,"2026-02-03":1,"2026-02-10":1,"2026-02-23":1,"2026-03-12":1,"2026-03-16":2,"2026-03-17":3,"2026-03-25":2,"2026-04-13":3,"2026-05-19":1,"2026-07-24":1},
+  "block": {"2018-02-14":1,"2018-03-01":1,"2018-04-05":1,"2018-04-13":1,"2018-04-27":1,"2018-05-04":1,"2018-05-31":1,"2018-06-06":4,"2018-07-13":1,"2018-07-25":2,"2018-07-26":2,"2018-08-09":1,"2018-08-26":1,"2018-09-05":1,"2018-09-06":1,"2018-09-07":1,"2018-09-24":1,"2018-11-20":1,"2018-11-27":1,"2019-02-19":1,"2019-03-13":1,"2019-04-05":1,"2019-04-09":1,"2019-04-10":1,"2019-04-11":1,"2019-04-12":1,"2019-04-24":1,"2019-04-25":1,"2019-04-29":2,"2019-05-03":1,"2019-05-07":2,"2019-05-17":1,"2019-05-21":1,"2019-05-22":1,"2019-05-23":1,"2019-05-31":1,"2019-06-10":1,"2019-06-11":2,"2019-06-12":1,"2019-07-17":1,"2019-07-23":1,"2019-08-14":1,"2019-08-24":1,"2019-09-20":1,"2019-11-22":1,"2019-12-02":1,"2020-03-23":1,"2020-03-31":1,"2020-04-08":1,"2020-04-15":1,"2020-05-05":1,"2020-05-11":1,"2020-10-06":1,"2020-11-03":2,"2020-11-05":1,"2020-11-09":2,"2020-11-13":1,"2020-11-26":2,"2021-05-25":1,"2021-05-26":1,"2021-12-01":1,"2022-03-08":3,"2022-03-18":1,"2022-03-22":2,"2022-03-26":1,"2022-04-14":2,"2022-04-17":1,"2022-04-19":1,"2022-06-15":1,"2022-06-16":1,"2022-06-17":1,"2022-06-20":3,"2022-06-21":1,"2022-06-23":1,"2022-06-24":2,"2022-06-29":1,"2022-06-30":1,"2022-07-25":1,"2022-07-26":1,"2022-07-27":1,"2022-08-02":1,"2022-08-04":1,"2022-08-08":3,"2022-08-09":7,"2022-08-10":1,"2022-08-12":2,"2022-08-23":2,"2022-08-29":1,"2022-09-01":1,"2022-09-02":1,"2022-09-06":1,"2022-09-09":2,"2022-09-12":1,"2022-09-22":1,"2022-09-23":3,"2022-09-28":1,"2022-09-29":1,"2022-09-30":4,"2022-10-01":1,"2022-10-04":1,"2022-10-19":1,"2022-10-20":2,"2022-11-02":2,"2022-11-03":2,"2022-11-07":1,"2022-11-10":3,"2022-11-14":4,"2022-11-22":1,"2022-11-23":7,"2023-01-04":2,"2023-01-05":4,"2023-01-09":2,"2023-01-16":1,"2023-01-17":4,"2023-01-23":1,"2023-01-24":3,"2023-02-01":2,"2023-02-03":1,"2023-02-08":4,"2023-02-09":1,"2023-02-22":3,"2023-02-23":5,"2023-02-24":2,"2023-02-27":4,"2023-03-06":1,"2023-03-24":1,"2023-03-27":1,"2023-03-28":2,"2023-04-05":1,"2023-04-07":1,"2023-04-10":2,"2023-05-11":1,"2023-07-07":3,"2023-07-10":2,"2023-07-12":3,"2023-07-13":1,"2023-07-14":1,"2023-07-17":2,"2023-07-20":2,"2023-08-05":1,"2023-08-25":1,"2023-09-14":2,"2023-09-28":1,"2023-10-11":1,"2023-10-15":2,"2023-10-16":4,"2023-10-20":4,"2023-10-25":1,"2023-11-01":3,"2023-11-08":1,"2023-11-09":2,"2023-11-16":1,"2023-11-25":1,"2023-11-27":1,"2023-11-28":1,"2023-12-04":5,"2023-12-05":3,"2023-12-07":1,"2023-12-11":1,"2023-12-12":3,"2023-12-19":3,"2023-12-20":1,"2024-01-02":1,"2024-01-03":5,"2024-01-04":4,"2024-02-14":2,"2024-02-15":1,"2024-02-21":2,"2024-02-28":2,"2024-02-29":2,"2024-03-29":1,"2024-04-02":2,"2024-04-12":1,"2024-04-30":1,"2024-05-02":2,"2024-05-10":1,"2024-06-11":1,"2024-06-18":1,"2024-07-02":1,"2024-08-30":1,"2024-09-13":1,"2024-09-20":1,"2025-01-13":1,"2025-01-17":1,"2025-01-19":1,"2025-01-20":2,"2025-02-13":3,"2025-03-20":2,"2025-03-21":3,"2025-03-24":1,"2025-03-25":2,"2025-03-27":1,"2025-03-28":1,"2025-04-02":2,"2025-04-03":2,"2025-04-07":2,"2025-04-08":1,"2025-04-09":4,"2025-04-10":6,"2025-04-11":1,"2025-04-14":3,"2025-04-21":3,"2025-04-22":2,"2025-04-23":4,"2025-04-24":1,"2025-04-25":1,"2025-04-28":2,"2025-04-30":2,"2025-05-09":1,"2025-05-13":4,"2025-05-14":4,"2025-05-15":4,"2025-05-16":7,"2025-05-20":4,"2025-05-21":2,"2025-05-22":4,"2025-05-29":3,"2025-05-30":1,"2025-06-01":4,"2025-06-04":4,"2025-06-05":3,"2025-06-09":1,"2025-06-11":4,"2025-06-13":1,"2025-06-14":2,"2025-06-18":2,"2025-06-19":2,"2025-06-24":6,"2025-06-25":1,"2025-08-01":1,"2025-08-05":2,"2025-08-06":1,"2025-10-07":1,"2025-11-20":2,"2025-12-23":1,"2025-12-30":3,"2026-01-06":1,"2026-01-09":1,"2026-01-12":3,"2026-01-13":1,"2026-01-21":2,"2026-02-10":2,"2026-03-04":2,"2026-03-06":2,"2026-03-27":3,"2026-04-02":1,"2026-04-05":2,"2026-04-07":1,"2026-04-08":2,"2026-04-09":6,"2026-04-10":1,"2026-04-13":5,"2026-04-17":1,"2026-04-27":4,"2026-05-04":1,"2026-05-07":2,"2026-06-18":2,"2026-06-19":5,"2026-06-20":5,"2026-06-21":3,"2026-06-22":1,"2026-07-02":1,"2026-07-13":1,"2026-07-15":1,"2026-07-17":3,"2026-07-30":1,"2026-08-07":1},
+  "build": {"2018-04-05":3,"2018-10-08":3,"2019-05-24":3,"2019-05-28":3,"2019-06-10":3,"2019-06-13":3,"2022-11-21":3,"2023-12-07":3,"2024-01-05":3,"2024-09-24":3,"2024-10-04":3,"2025-02-05":3,"2025-02-13":3,"2025-02-28":3,"2025-05-19":3,"2025-06-16":3,"2025-07-29":2,"2025-10-10":2,"2026-01-06":1,"2026-01-21":1,"2026-01-22":1,"2026-03-09":1,"2026-03-17":1,"2026-03-25":1,"2026-03-26":2,"2026-03-27":1,"2026-04-13":1,"2026-05-07":1,"2026-07-14":1},
+  "clerk": {"2019-06-13":3},
+  "compute": {"2018-03-19":3,"2018-03-20":3,"2018-06-05":1,"2018-11-28":1,"2019-03-13":1,"2019-04-29":1,"2019-07-23":1,"2019-07-24":1,"2019-08-08":3,"2019-08-09":1,"2019-08-27":1,"2019-08-29":1,"2019-09-11":1,"2019-09-13":1,"2019-09-20":1,"2019-10-03":1,"2019-10-14":1,"2019-10-16":1,"2019-10-23":1,"2019-11-04":1,"2019-11-05":1,"2019-11-22":2,"2019-11-28":1,"2019-12-04":1,"2020-07-24":2,"2020-07-30":1,"2020-10-12":1,"2020-11-20":1,"2021-05-26":1,"2021-07-26":1,"2021-07-27":1,"2021-07-29":4,"2021-07-30":1,"2021-08-09":1,"2021-08-24":1,"2021-08-31":1,"2021-09-17":1,"2021-09-22":1,"2022-04-26":1,"2022-05-10":1,"2022-05-23":1,"2022-05-24":1,"2022-09-12":1,"2022-09-13":1,"2022-09-15":1,"2022-09-20":1,"2022-09-21":1,"2022-09-22":2,"2022-09-23":6,"2022-09-26":1,"2022-09-28":1,"2022-09-29":1,"2022-10-20":1,"2022-10-26":1,"2022-11-03":1,"2023-02-03":2,"2023-03-03":1,"2023-05-11":1,"2023-05-22":1,"2023-05-29":6,"2023-06-01":7,"2023-06-05":5,"2023-06-06":1,"2023-06-09":1,"2023-06-10":2,"2023-06-12":1,"2023-06-14":1,"2023-06-23":1,"2023-06-26":2,"2023-06-27":4,"2023-07-02":1,"2023-07-04":7,"2023-07-06":8,"2023-07-07":4,"2023-07-10":2,"2023-07-14":1,"2023-08-05":1,"2023-08-08":1,"2023-08-17":1,"2023-09-14":2,"2023-09-29":1,"2023-10-13":1,"2023-10-18":1,"2023-11-08":1,"2023-11-10":1,"2023-12-21":1,"2024-01-02":4,"2024-01-04":1,"2024-01-10":5,"2024-01-11":2,"2024-01-16":1,"2024-01-23":2,"2024-02-06":1,"2024-02-07":1,"2024-02-13":1,"2024-02-14":1,"2024-02-15":1,"2024-03-18":1,"2024-03-19":1,"2024-03-21":1,"2024-03-25":5,"2024-03-26":1,"2024-03-28":1,"2024-04-01":4,"2024-04-02":1,"2024-04-03":1,"2024-04-04":7,"2024-04-05":1,"2024-04-12":4,"2024-04-16":4,"2024-04-17":1,"2024-04-18":3,"2024-04-22":1,"2024-04-23":8,"2024-05-06":4,"2024-05-07":2,"2024-05-08":2,"2024-05-09":3,"2024-05-10":1,"2024-05-27":4,"2024-06-06":5,"2024-06-10":2,"2024-06-11":1,"2024-07-22":1,"2024-08-12":2,"2024-08-13":1,"2024-08-22":1,"2024-09-13":1,"2024-09-16":1,"2024-09-20":1,"2025-02-03":3,"2025-02-04":8,"2025-02-05":4,"2025-02-06":1,"2025-02-10":7,"2025-02-11":1,"2025-02-12":2,"2025-02-13":2,"2025-02-17":2,"2025-02-20":1,"2025-02-25":1,"2025-02-28":1,"2025-03-03":1,"2025-03-04":1,"2025-03-07":1,"2025-03-11":3,"2025-03-12":1,"2025-03-14":1,"2025-03-23":1,"2025-03-24":6,"2025-03-25":4,"2025-03-26":1,"2025-03-27":2,"2025-03-28":1,"2025-04-02":1,"2025-04-03":1,"2025-04-10":2,"2025-04-11":1,"2025-05-15":1,"2025-05-19":1,"2025-05-20":5,"2025-05-21":1,"2025-05-22":1,"2025-06-02":2,"2025-06-03":1,"2025-06-06":3,"2025-06-13":8,"2025-06-14":7,"2025-06-16":2,"2025-06-18":5,"2025-06-19":3,"2025-06-20":10,"2025-06-24":1,"2025-06-26":2,"2025-06-27":1,"2025-07-29":5,"2025-07-30":2,"2025-07-31":5,"2025-08-01":3,"2025-08-04":2,"2025-08-12":1,"2025-09-04":4,"2025-09-16":2,"2025-09-18":6,"2025-09-19":3,"2025-09-22":1,"2025-10-06":1,"2025-10-09":3,"2025-10-10":1,"2025-10-12":2,"2025-10-15":2,"2025-10-17":1,"2025-10-29":1,"2025-10-30":1,"2025-11-01":1,"2025-11-02":1,"2025-11-04":1,"2025-11-09":2,"2025-11-10":4,"2025-11-11":3,"2026-01-02":2,"2026-01-06":1,"2026-01-14":3,"2026-01-23":1,"2026-01-28":1,"2026-02-11":2,"2026-02-13":1,"2026-02-17":1,"2026-02-18":1,"2026-02-19":1,"2026-04-30":7,"2026-05-05":2,"2026-05-07":1,"2026-05-13":1,"2026-08-07":2},
+  "discovery": {"2018-04-05":4,"2018-04-11":2,"2018-04-24":2,"2018-04-27":2,"2018-06-06":2,"2018-07-20":2,"2018-08-06":2,"2019-04-24":4,"2020-03-27":1,"2020-11-05":1,"2020-11-09":1,"2021-07-26":1,"2021-07-27":1,"2021-07-29":2,"2021-08-09":1,"2021-08-13":1,"2021-08-17":1,"2021-08-31":2,"2021-09-01":1,"2021-09-04":2,"2021-09-06":4,"2021-09-17":1,"2021-10-07":1,"2021-10-08":1,"2021-10-18":1,"2021-10-20":1,"2021-10-25":1,"2021-11-17":1,"2022-01-25":1,"2022-03-08":1,"2022-03-22":1,"2022-04-06":1,"2022-05-16":1,"2022-06-24":1,"2022-06-29":1,"2022-07-13":1,"2022-08-02":3,"2022-08-04":1,"2022-08-08":1,"2022-08-09":1,"2022-08-29":1,"2022-09-05":1,"2022-09-08":1,"2022-09-09":1,"2022-09-12":1,"2022-11-09":10,"2022-11-10":1,"2023-02-08":3,"2023-02-09":2,"2023-02-23":1,"2023-03-15":1,"2023-12-21":1,"2024-01-02":1,"2024-07-23":1,"2024-09-13":1,"2025-11-14":2,"2025-12-23":1,"2025-12-30":5,"2026-07-22":1},
+  "fvt": {"2017-12-08":1,"2018-01-10":1},
+  "image": {"2018-09-14":3,"2019-02-19":3,"2022-06-02":3,"2022-08-08":3,"2022-09-29":6,"2022-09-30":3,"2022-11-07":3,"2023-03-03":6,"2024-04-02":4,"2025-11-12":2,"2025-11-17":2,"2026-01-13":8,"2026-03-03":2},
+  "install": {"2019-09-09":2,"2021-09-27":1,"2021-10-01":4,"2021-10-12":1,"2021-10-13":1,"2021-11-17":1,"2021-11-18":1,"2021-11-25":1,"2022-08-18":1,"2022-09-09":1,"2022-09-15":1,"2022-09-29":1,"2023-08-05":1,"2023-08-07":1,"2024-03-19":1,"2024-03-26":1},
+  "monitor": {"2019-04-09":3,"2019-05-03":3,"2019-06-10":3,"2020-06-09":3,"2020-07-08":3,"2020-07-15":3,"2022-07-25":3,"2024-04-02":4,"2024-04-04":2,"2024-10-30":2},
+  "powervc-multinode": {"2021-03-18":1,"2021-03-31":1,"2021-04-15":1,"2021-04-19":2,"2021-05-12":2,"2021-06-21":1,"2021-07-08":1,"2021-07-19":1,"2021-07-20":1,"2021-08-04":1,"2021-08-11":1,"2021-08-16":1,"2021-08-17":1,"2021-08-18":1,"2021-08-20":1,"2021-08-26":4,"2021-09-04":1,"2021-10-05":1,"2021-10-08":1,"2021-10-11":1,"2021-10-13":1,"2021-10-15":1,"2021-10-25":1,"2021-11-10":1,"2021-11-17":1,"2021-11-18":1,"2021-11-25":1,"2021-12-14":1,"2022-01-04":1,"2022-01-11":1,"2022-04-06":1,"2022-04-12":2,"2025-03-20":1,"2025-04-09":1},
+  "ras": {"2018-12-13":3,"2019-07-24":3,"2019-08-08":3},
+  "security": {"2021-10-02":4},
+  "svt": {"2018-10-05":2,"2023-06-19":4,"2023-06-21":2,"2024-03-28":2},
+  "ttv": {"2018-11-02":2},
+  "ui": {"2020-06-22":1,"2021-08-16":1,"2021-09-02":1}
+};
+
+const fmt = n => n.toLocaleString();
+const repos = Object.keys(DATA);
+
+// All years
+const allYearsSet = new Set();
+repos.forEach(r => Object.keys(DATA[r]).forEach(y => allYearsSet.add(+y)));
+const allYears = [...allYearsSet].sort();
+
+// Global totals
+let gCommits = 0, gAdded = 0, gRemoved = 0;
+repos.forEach(r => Object.values(DATA[r]).forEach(d => {
+  gCommits += d.commits; gAdded += d.added; gRemoved += d.removed;
+}));
+
+// Active years
+const activeYearsSet = new Set();
+repos.forEach(r => Object.entries(DATA[r]).forEach(([y,d]) => {
+  if (d.commits > 0) activeYearsSet.add(+y);
+}));
+const activeYears = [...activeYearsSet].sort();
+
+// Repo totals
+const repoTotals = {};
+repos.forEach(r => {
+  repoTotals[r] = {commits:0, added:0, removed:0};
+  Object.values(DATA[r]).forEach(d => {
+    repoTotals[r].commits += d.commits;
+    repoTotals[r].added   += d.added;
+    repoTotals[r].removed += d.removed;
+  });
+});
+const activeRepos = repos.filter(r => repoTotals[r].commits > 0)
+  .sort((a,b) => repoTotals[b].commits - repoTotals[a].commits);
+
+// --- Summary Cards ---
+const cards = [
+  { label: "Total Commits", value: fmt(gCommits), sub: "across all repos" },
+  { label: "Lines Added",   value: fmt(gAdded),   sub: "all repos", cls: "green" },
+  { label: "Lines Removed", value: fmt(gRemoved), sub: "all repos", cls: "red" },
+  { label: "Net Lines",     value: (gAdded-gRemoved>=0?"+":"")+fmt(gAdded-gRemoved), sub: "added minus removed", cls: gAdded>=gRemoved?"green":"red" },
+  { label: "Repos Touched", value: activeRepos.length, sub: "of 22 in workspace" },
+  { label: "Active Since",  value: activeYears[0], sub: `through ${activeYears[activeYears.length-1]}` }
+];
+const cardEl = document.getElementById("summary-cards");
+cards.forEach(c => {
+  const d = document.createElement("div");
+  d.className = "card";
+  d.innerHTML = `<div class="card-label">${c.label}</div><div class="card-value ${c.cls||''}">${c.value}</div><div class="card-sub">${c.sub}</div>`;
+  cardEl.appendChild(d);
+});
+
+// --- Yearly totals table ---
+const yearlyTotals = {};
+allYears.forEach(y => { yearlyTotals[y] = {commits:0,added:0,removed:0}; });
+repos.forEach(r => Object.entries(DATA[r]).forEach(([y,d]) => {
+  yearlyTotals[+y].commits += d.commits;
+  yearlyTotals[+y].added   += d.added;
+  yearlyTotals[+y].removed += d.removed;
+}));
+
+const ytbl = document.getElementById("yearly-table");
+let html = `<thead><tr>
+  <th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>Repos Active</th>
+</tr></thead><tbody>`;
+allYears.forEach(y => {
+  const d = yearlyTotals[y];
+  if (!d.commits) return;
+  const net = d.added - d.removed;
+  const repoCount = repos.filter(r => DATA[r][y] && DATA[r][y].commits > 0).length;
+  html += `<tr>
+    <td>${y}</td>
+    <td>${fmt(d.commits)}</td>
+    <td class="green">${fmt(d.added)}</td>
+    <td class="red">${fmt(d.removed)}</td>
+    <td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td>
+    <td>${repoCount}</td>
+  </tr>`;
+});
+html += `<tr class="total-row">
+  <td>All Years</td>
+  <td>${fmt(gCommits)}</td>
+  <td class="green">${fmt(gAdded)}</td>
+  <td class="red">${fmt(gRemoved)}</td>
+  <td class="${gAdded>=gRemoved?'net-pos':'net-neg'}">${gAdded>=gRemoved?"+":""}${fmt(gAdded-gRemoved)}</td>
+  <td>${activeRepos.length}</td>
+</tr>`;
+ytbl.innerHTML = html + "</tbody>";
+
+// --- Repo totals table ---
+const rtbl = document.getElementById("repo-table");
+html = `<thead><tr>
+  <th>Repository</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>First Year</th><th>Last Year</th>
+</tr></thead><tbody>`;
+activeRepos.forEach(r => {
+  const d = repoTotals[r];
+  const years = Object.keys(DATA[r]).map(Number).filter(y => DATA[r][y].commits > 0).sort();
+  const net = d.added - d.removed;
+  html += `<tr>
+    <td>${r}</td>
+    <td>${fmt(d.commits)}</td>
+    <td class="green">${fmt(d.added)}</td>
+    <td class="red">${fmt(d.removed)}</td>
+    <td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td>
+    <td>${years[0]}</td>
+    <td>${years[years.length-1]}</td>
+  </tr>`;
+});
+rtbl.innerHTML = html + "</tbody>";
+
+// --- Repo bar chart ---
+const chartEl = document.getElementById("repo-chart");
+const maxCmt = Math.max(...activeRepos.map(r => repoTotals[r].commits));
+const maxAdd = Math.max(...activeRepos.map(r => repoTotals[r].added));
+const maxRem = Math.max(...activeRepos.map(r => repoTotals[r].removed));
+activeRepos.forEach(r => {
+  const d = repoTotals[r];
+  const wCmt = Math.max(1, (d.commits / maxCmt) * 100).toFixed(1);
+  const wAdd = Math.max(1, (d.added   / maxAdd)   * 100).toFixed(1);
+  const wRem = Math.max(1, (d.removed / maxRem)   * 100).toFixed(1);
+  chartEl.innerHTML += `<div class="chart-row">
+    <div class="chart-label" title="${r}">${r}</div>
+    <div class="chart-bars">
+      <div class="bar-track"><div class="bar-fill-cmt" style="width:${wCmt}%"></div></div>
+      <div class="bar-track"><div class="bar-fill-add" style="width:${wAdd}%"></div></div>
+      <div class="bar-track"><div class="bar-fill-rem" style="width:${wRem}%"></div></div>
+    </div>
+    <div class="chart-val">${fmt(d.commits)} cmts</div>
+  </div>`;
+});
+
+// --- Per-repo detail tabs ---
+const tabsEl  = document.getElementById("repo-tabs");
+const detailEl = document.getElementById("repo-detail-table");
+let activeRepo = activeRepos[0];
+
+function renderDetail(repo) {
+  const d = DATA[repo];
+  const years = Object.keys(d).map(Number).sort();
+  let h = `<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th></tr></thead><tbody>`;
+  let tc=0,ta=0,tr2=0;
+  years.forEach(y => {
+    if (!d[y].commits && !d[y].added) return;
+    const net = d[y].added - d[y].removed;
+    tc+=d[y].commits; ta+=d[y].added; tr2+=d[y].removed;
+    h += `<tr>
+      <td>${y}</td>
+      <td>${fmt(d[y].commits)}</td>
+      <td class="green">${fmt(d[y].added)}</td>
+      <td class="red">${fmt(d[y].removed)}</td>
+      <td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td>
+    </tr>`;
+  });
+  const tnet = ta-tr2;
+  h += `<tr class="total-row">
+    <td>Total</td><td>${fmt(tc)}</td>
+    <td class="green">${fmt(ta)}</td>
+    <td class="red">${fmt(tr2)}</td>
+    <td class="${tnet>=0?'net-pos':'net-neg'}">${tnet>=0?"+":""}${fmt(tnet)}</td>
+  </tr>`;
+  detailEl.innerHTML = h + "</tbody>";
+}
+
+activeRepos.forEach(repo => {
+  const btn = document.createElement("button");
+  btn.className = "tab-btn" + (repo === activeRepo ? " active" : "");
+  btn.textContent = repo;
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeRepo = repo;
+    renderDetail(repo);
+  });
+  tabsEl.appendChild(btn);
+});
+renderDetail(activeRepo);
+
+/* ════════════════════════════════════════
+   HEATMAP CALENDAR
+   ════════════════════════════════════════ */
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DOW_LABELS = ["","Mon","","Wed","","Fri",""];
+
+// Repos that have day data, sorted by total commits desc
+const heatRepos = activeRepos.filter(r => DAY_DATA[r]);
+
+// Build per-repo year list from DAY_DATA
+function yearsForRepo(repo) {
+  const ys = new Set(Object.keys(DAY_DATA[repo]).map(d => +d.slice(0,4)));
+  return [...ys].sort((a,b) => b-a); // newest first
+}
+
+// Compute max commits in a single day for this repo+year (for colour scaling)
+function maxDayForRepoYear(repo, year) {
+  let m = 0;
+  const prefix = `${year}-`;
+  for (const [d,c] of Object.entries(DAY_DATA[repo])) {
+    if (d.startsWith(prefix)) m = Math.max(m, c);
+  }
+  return m || 1;
+}
+
+function levelClass(count, max) {
+  if (!count) return "";
+  const pct = count / max;
+  if (pct <= 0.25) return "l1";
+  if (pct <= 0.50) return "l2";
+  if (pct <= 0.75) return "l3";
+  return "l4";
+}
+
+function buildHeatmap(repo, year) {
+  const dayMap = DAY_DATA[repo] || {};
+  const max    = maxDayForRepoYear(repo, year);
+  const prefix = `${year}-`;
+
+  // Count commits in year for title
+  let yearTotal = 0;
+  for (const [d,c] of Object.entries(dayMap)) {
+    if (d.startsWith(prefix)) yearTotal += c;
+  }
+  document.getElementById("heatmap-title").textContent =
+    `${yearTotal} commit${yearTotal !== 1 ? "s" : ""} in ${year} · ${repo}`;
+
+  // Jan 1 of this year
+  const jan1 = new Date(year, 0, 1);
+  // Start grid on Sunday of the week containing Jan 1
+  const startDow = jan1.getDay(); // 0=Sun
+  const gridStart = new Date(jan1);
+  gridStart.setDate(gridStart.getDate() - startDow);
+
+  // 53 weeks × 7 days grid
+  const WEEKS = 53;
+  const gridEl = document.getElementById("heatmap-grid");
+  gridEl.innerHTML = "";
+
+  // DOW labels column
+  const dowCol = document.createElement("div");
+  dowCol.className = "heatmap-dow-labels";
+  DOW_LABELS.forEach(lbl => {
+    const el = document.createElement("div");
+    el.className = "heatmap-dow-label";
+    el.textContent = lbl;
+    dowCol.appendChild(el);
+  });
+  gridEl.appendChild(dowCol);
+
+  // Weeks container
+  const weeksEl = document.createElement("div");
+  weeksEl.className = "heatmap-weeks";
+
+  let shownMonths = {};
+
+  for (let w = 0; w < WEEKS; w++) {
+    const weekEl = document.createElement("div");
+    weekEl.className = "heatmap-week";
+
+    // Month label row (top of week column)
+    const monthEl = document.createElement("div");
+    monthEl.className = "heatmap-month-label";
+    const firstDayOfWeek = new Date(gridStart);
+    firstDayOfWeek.setDate(gridStart.getDate() + w * 7);
+    const mo = firstDayOfWeek.getMonth();
+    const yr = firstDayOfWeek.getFullYear();
+    if (yr === year && !shownMonths[mo]) {
+      shownMonths[mo] = true;
+      monthEl.textContent = MONTHS[mo];
+    }
+    weekEl.appendChild(monthEl);
+
+    // 7 day cells
+    for (let d = 0; d < 7; d++) {
+      const date = new Date(gridStart);
+      date.setDate(gridStart.getDate() + w * 7 + d);
+      const cell = document.createElement("div");
+      cell.className = "heatmap-cell";
+
+      if (date.getFullYear() === year) {
+        const iso = date.toISOString().slice(0,10);
+        const count = dayMap[iso] || 0;
+        const lvl = levelClass(count, max);
+        if (lvl) cell.classList.add(lvl);
+        if (count) {
+          const label = date.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+          cell.title = `${label}: ${count} commit${count>1?"s":""}`;
+        }
+      } else {
+        cell.style.opacity = "0";
+        cell.style.pointerEvents = "none";
+      }
+      weekEl.appendChild(cell);
+    }
+    weeksEl.appendChild(weekEl);
+  }
+
+  gridEl.appendChild(weeksEl);
+}
+
+// Build heatmap repo tabs
+const hmTabsEl = document.getElementById("heatmap-repo-tabs");
+let activeHmRepo = heatRepos[0];
+let activeHmYear = yearsForRepo(activeHmRepo)[0];
+
+function setHmRepo(repo) {
+  activeHmRepo = repo;
+  // rebuild year nav
+  const years = yearsForRepo(repo);
+  activeHmYear = years[0];
+  renderYearNav(years);
+  buildHeatmap(repo, activeHmYear);
+}
+
+function renderYearNav(years) {
+  const navEl = document.getElementById("heatmap-year-nav");
+  navEl.innerHTML = "";
+  years.forEach(y => {
+    const btn = document.createElement("button");
+    btn.className = "heatmap-year-btn" + (y === activeHmYear ? " active" : "");
+    btn.textContent = y;
+    btn.addEventListener("click", () => {
+      activeHmYear = y;
+      document.querySelectorAll(".heatmap-year-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      buildHeatmap(activeHmRepo, activeHmYear);
+    });
+    navEl.appendChild(btn);
+  });
+}
+
+heatRepos.forEach(repo => {
+  const btn = document.createElement("button");
+  btn.className = "tab-btn" + (repo === activeHmRepo ? " active" : "");
+  btn.textContent = repo;
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#heatmap-repo-tabs .tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    setHmRepo(repo);
+  });
+  hmTabsEl.appendChild(btn);
+});
+
+// Initial render
+renderYearNav(yearsForRepo(activeHmRepo));
+buildHeatmap(activeHmRepo, activeHmYear);
+</script>
+</body>
+</html>
