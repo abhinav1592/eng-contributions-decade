@@ -84,9 +84,30 @@
   .page-footer a{color:var(--accent);text-decoration:none;}
   .page-footer a:hover{text-decoration:underline;}
   .mib{margin-top:8px;font-size:10px;opacity:.45;}
+
+  html[data-theme="dark"] {
+    --bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;
+    --accent:#58a6ff;--accent2:#a78bfa;--green:#3fb950;--red:#f85149;--orange:#e3b341;
+    --card-border:#21262d;
+  }
+  html[data-theme="dark"] .chip-storage{border-color:#1d3a5c;color:#79c0ff;background:#0d2137;}
+  html[data-theme="dark"] .chip-compute{border-color:#2d1f5e;color:#c084fc;background:#1a0f3a;}
+  html[data-theme="dark"] .chip-network{border-color:#0f3a1f;color:#56d364;background:#0d2318;}
+  html[data-theme="dark"] .chip-platform{border-color:#3a2a0f;color:#e3b341;background:#231900;}
+  html[data-theme="dark"] .tag-blue{background:#0d2137;color:#79c0ff;}
+  html[data-theme="dark"] .tag-purple{background:#1a0f3a;color:#c084fc;}
+  html[data-theme="dark"] .tag-green{background:#0d2318;color:#56d364;}
+  html[data-theme="dark"] .tag-orange{background:#231900;color:#e3b341;}
+  html[data-theme="dark"] .tag-red{background:#3a0d0d;color:#f85149;}
+  html[data-theme="dark"] .tag-gray{background:#161b22;color:#8b949e;border-color:#30363d;}
+  html[data-theme="dark"] .pcard:hover{box-shadow:0 2px 16px rgba(88,166,255,.12);}
+  html[data-theme="dark"] .tl-dot{border-color:#0d1117;}
+  #theme-toggle{position:fixed;top:16px;right:20px;z-index:100;padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-size:12px;cursor:pointer;transition:background .15s;}
+  #theme-toggle:hover{background:var(--border);}
 </style>
 </head>
 <body>
+<button id="theme-toggle">🌙 Dark</button>
 <div class="wrapper">
 
   <!-- ── HERO ── -->
@@ -100,8 +121,9 @@
       Primary domains: <strong>storage driver engineering</strong> (SAN arrays, FC zoning, multi-path I/O),
       <strong>VM lifecycle management</strong> (HMC, NPIV, vSCSI), and
       <strong>feature architecture</strong> (bulk operations, image pipelines, performance optimisation).
-      Served as a principal escalation engineer for enterprise production incidents across
-      18+ global clients at P1/P2 severity.
+      Directly investigated and resolved production incidents for 18+ enterprise clients at P1/P2 severity —
+      root-causing storage driver failures, FC zoning regressions, VM lifecycle breakdowns, and upgrade
+      regressions under live-environment pressure.
     </p>
   </div>
 
@@ -260,7 +282,7 @@
           Storage driver engineering across 8 SAN vendors · VM lifecycle management via HMC ·
           SAN fabric &amp; FC zoning automation (Brocade, Cisco) · Cloud-init &amp; OS image pipeline ·
           Feature architecture for bulk operations, image appliance node, and performance optimisation ·
-          Principal escalation engineer for enterprise production incidents.
+          Directly investigated and resolved 25+ production incidents for 18+ enterprise clients at P1/P2 severity.
         </div>
       </div>
 
@@ -275,5 +297,22 @@
   </div>
 
 </div>
+<script>
+(function(){
+  var root=document.documentElement;
+  var btn=document.getElementById("theme-toggle");
+  var stored=localStorage.getItem("portfolio-theme");
+  var initial=stored||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+  function apply(t){
+    if(t==="dark"){root.setAttribute("data-theme","dark");btn.textContent="☀️ Light";}
+    else{root.removeAttribute("data-theme");btn.textContent="🌙 Dark";}
+  }
+  apply(initial);
+  btn.addEventListener("click",function(){
+    var next=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    apply(next);localStorage.setItem("portfolio-theme",next);
+  });
+})();
+</script>
 </body>
 </html>

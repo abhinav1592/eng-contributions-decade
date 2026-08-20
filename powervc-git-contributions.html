@@ -4,67 +4,87 @@
 <meta charset="UTF-8">
 <title>Senior Software Engineer — Git Contributions (IBM PowerVC 2017–2026)</title>
 <style>
+  :root {
+    --bg:#ffffff;--surface:#f7f8fa;--border:#e5e7eb;--text:#1f2328;--muted:#57606a;
+    --accent:#3b82d4;--green:#1a7f37;--red:#cf222e;
+    --hm-empty:#ebedf0;--hm-l1:#9be9a8;--hm-l2:#40c463;--hm-l3:#30a14e;--hm-l4:#216e39;
+    --total-bg:#f0f3ff;
+  }
+  html[data-theme="dark"] {
+    --bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;
+    --accent:#58a6ff;--green:#3fb950;--red:#f85149;
+    --hm-empty:#161b22;--hm-l1:#0e4429;--hm-l2:#006d32;--hm-l3:#26a641;--hm-l4:#39d353;
+    --total-bg:#1c2333;
+  }
+  html[data-theme="dark"] .tab-btn.active{background:var(--accent);border-color:var(--accent);}
+  html[data-theme="dark"] .heatmap-year-btn.active{background:var(--accent);border-color:var(--accent);}
+  html[data-theme="dark"] .tab-btn:hover:not(.active){background:var(--border);}
+  html[data-theme="dark"] .heatmap-year-btn:hover:not(.active){background:var(--border);}
+  html[data-theme="dark"] tr:hover td{background:var(--surface);}
+  #theme-toggle{position:fixed;top:16px;right:20px;z-index:100;padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-size:12px;cursor:pointer;transition:background .15s;}
+  #theme-toggle:hover{background:var(--border);}
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; background: #ffffff; color: #1f2328; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; background: var(--bg); color: var(--text); }
   .wrapper { max-width: 980px; margin: 0 auto; padding: 32px 20px 56px; }
   h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 24px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 32px; }
-  .card { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px; }
-  .card-label { font-size: 11px; color: #57606a; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; }
+  .card-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
   .card-value { font-size: 24px; font-weight: 700; }
-  .card-sub { font-size: 11px; color: #57606a; margin-top: 1px; }
-  .green { color: #1a7f37; } .red { color: #cf222e; }
-  .section-title { font-size: 15px; font-weight: 600; margin: 28px 0 10px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
+  .card-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .green { color: var(--green); } .red { color: var(--red); }
+  .section-title { font-size: 15px; font-weight: 600; margin: 28px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
   .tbl-wrap { overflow-x: auto; margin-bottom: 4px; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { background: #f7f8fa; border-bottom: 2px solid #e5e7eb; padding: 7px 10px; text-align: right; font-weight: 600; color: #57606a; white-space: nowrap; }
+  th { background: var(--surface); border-bottom: 2px solid var(--border); padding: 7px 10px; text-align: right; font-weight: 600; color: var(--muted); white-space: nowrap; }
   th:first-child { text-align: left; }
-  td { border-bottom: 1px solid #e5e7eb; padding: 6px 10px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td { border-bottom: 1px solid var(--border); padding: 6px 10px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   td:first-child { text-align: left; font-weight: 500; }
-  tr:hover td { background: #f7f8fa; }
-  tr.total-row td { font-weight: 700; background: #f0f3ff; }
-  .net-pos { color: #1a7f37; } .net-neg { color: #cf222e; }
+  tr:hover td { background: var(--surface); }
+  tr.total-row td { font-weight: 700; background: var(--total-bg); }
+  .net-pos { color: var(--green); } .net-neg { color: var(--red); }
   .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tab-btn { padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 4px; background: #f7f8fa; color: #1f2328; cursor: pointer; font-size: 12px; transition: background .1s; }
-  .tab-btn.active { background: #3b82d4; color: #fff; border-color: #3b82d4; }
-  .tab-btn:hover:not(.active) { background: #e5e7eb; }
+  .tab-btn { padding: 5px 12px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--text); cursor: pointer; font-size: 12px; transition: background .1s; }
+  .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab-btn:hover:not(.active) { background: var(--border); }
   .chart-wrap { margin-bottom: 32px; }
   .chart-row { display: flex; align-items: center; margin-bottom: 5px; gap: 8px; }
-  .chart-label { width: 160px; font-size: 12px; text-align: right; color: #57606a; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chart-label { width: 160px; font-size: 12px; text-align: right; color: var(--muted); flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chart-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-  .bar-track { height: 8px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
-  .bar-fill-add  { height: 100%; background: #1a7f37; border-radius: 3px; }
-  .bar-fill-rem  { height: 100%; background: #cf222e; border-radius: 3px; }
-  .bar-fill-cmt  { height: 100%; background: #3b82d4; border-radius: 3px; }
-  .chart-val { font-size: 11px; color: #57606a; min-width: 60px; }
-  .chart-legend { display: flex; gap: 16px; font-size: 11px; color: #57606a; margin-bottom: 10px; }
+  .bar-track { height: 8px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .bar-fill-add  { height: 100%; background: var(--green); border-radius: 3px; }
+  .bar-fill-rem  { height: 100%; background: var(--red); border-radius: 3px; }
+  .bar-fill-cmt  { height: 100%; background: var(--accent); border-radius: 3px; }
+  .chart-val { font-size: 11px; color: var(--muted); min-width: 60px; }
+  .chart-legend { display: flex; gap: 16px; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
   .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
   .heatmap-outer { margin-bottom: 8px; }
   .heatmap-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 12px; flex-wrap: wrap; }
-  .heatmap-title { font-size: 13px; font-weight: 600; color: #1f2328; }
+  .heatmap-title { font-size: 13px; font-weight: 600; color: var(--text); }
   .heatmap-year-nav { display: flex; gap: 6px; flex-wrap: wrap; }
-  .heatmap-year-btn { padding: 3px 10px; border: 1px solid #e5e7eb; border-radius: 4px; background: #f7f8fa; color: #57606a; cursor: pointer; font-size: 11px; }
-  .heatmap-year-btn.active { background: #3b82d4; color: #fff; border-color: #3b82d4; }
-  .heatmap-year-btn:hover:not(.active) { background: #e5e7eb; }
+  .heatmap-year-btn { padding: 3px 10px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--muted); cursor: pointer; font-size: 11px; }
+  .heatmap-year-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .heatmap-year-btn:hover:not(.active) { background: var(--border); }
   .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
   .heatmap-grid { display: inline-flex; gap: 0; }
   .heatmap-dow-labels { display: flex; flex-direction: column; gap: 0; margin-right: 4px; padding-top: 18px; }
-  .heatmap-dow-label { height: 11px; font-size: 9px; color: #57606a; text-align: right; line-height: 11px; margin-bottom: 2px; width: 22px; }
+  .heatmap-dow-label { height: 11px; font-size: 9px; color: var(--muted); text-align: right; line-height: 11px; margin-bottom: 2px; width: 22px; }
   .heatmap-weeks { display: flex; gap: 2px; }
   .heatmap-week { display: flex; flex-direction: column; gap: 2px; }
-  .heatmap-month-label { font-size: 9px; color: #57606a; height: 18px; line-height: 18px; width: 11px; text-align: center; }
-  .heatmap-cell { width: 11px; height: 11px; border-radius: 2px; background: #ebedf0; cursor: default; }
+  .heatmap-month-label { font-size: 9px; color: var(--muted); height: 18px; line-height: 18px; width: 11px; text-align: center; }
+  .heatmap-cell { width: 11px; height: 11px; border-radius: 2px; background: var(--hm-empty); cursor: default; }
   .heatmap-cell[title]:hover { outline: 1px solid #57606a; }
-  .heatmap-cell.l1 { background: #9be9a8; } .heatmap-cell.l2 { background: #40c463; }
-  .heatmap-cell.l3 { background: #30a14e; } .heatmap-cell.l4 { background: #216e39; }
-  .heatmap-foot { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #57606a; margin-top: 6px; }
+  .heatmap-cell.l1 { background: var(--hm-l1); } .heatmap-cell.l2 { background: var(--hm-l2); }
+  .heatmap-cell.l3 { background: var(--hm-l3); } .heatmap-cell.l4 { background: var(--hm-l4); }
+  .heatmap-foot { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); margin-top: 6px; }
   .heatmap-foot-legend { display: flex; gap: 2px; align-items: center; }
   .heatmap-foot-cell { width: 11px; height: 11px; border-radius: 2px; }
-  footer { text-align: center; font-size: 11px; color: #57606a; border-top: 1px solid #e5e7eb; padding-top: 14px; margin-top: 48px; }
+  footer { text-align: center; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px; margin-top: 48px; }
 </style>
 </head>
 <body>
+<button id="theme-toggle">🌙 Dark</button>
 <div class="wrapper">
   <h1>Senior Software Engineer — Git Contributions</h1>
   <p class="subtitle">IBM PowerVC · 22 Repositories · 2017 – 2026 &nbsp;|&nbsp; Commits · Lines Added · Lines Removed &nbsp;|&nbsp; Generated: <span id="gen-date"></span></p>
@@ -99,6 +119,23 @@
   </div>
 </div>
 <footer>Senior Software Engineer &middot; Cloud Infrastructure &middot; IBM PowerVC (2017&ndash;2026) &middot; Made with IBM Bob</footer>
+<script>
+(function(){
+  var root=document.documentElement;
+  var btn=document.getElementById("theme-toggle");
+  var stored=localStorage.getItem("git-contrib-theme");
+  var initial=stored||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+  function apply(t){
+    if(t==="dark"){root.setAttribute("data-theme","dark");btn.textContent="☀️ Light";}
+    else{root.removeAttribute("data-theme");btn.textContent="🌙 Dark";}
+  }
+  apply(initial);
+  btn.addEventListener("click",function(){
+    var next=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    apply(next);localStorage.setItem("git-contrib-theme",next);
+  });
+})();
+</script>
 <script>
 document.getElementById("gen-date").textContent = new Date().toLocaleDateString("en-US",{day:"numeric",month:"long",year:"numeric"});
 const DATA={"api-gateway":{"2018":{"added":24,"commits":1,"removed":0},"2021":{"added":905,"commits":19,"removed":84},"2022":{"added":187,"commits":14,"removed":97},"2023":{"added":58,"commits":5,"removed":27},"2024":{"added":32,"commits":6,"removed":14},"2025":{"added":132,"commits":13,"removed":87},"2026":{"added":2841,"commits":20,"removed":726}},"storage-driver":{"2018":{"added":885,"commits":24,"removed":228},"2019":{"added":1378,"commits":30,"removed":1031},"2020":{"added":634,"commits":15,"removed":81},"2021":{"added":16,"commits":3,"removed":14},"2022":{"added":3382,"commits":85,"removed":1310},"2023":{"added":6883,"commits":107,"removed":2748},"2024":{"added":395,"commits":33,"removed":441},"2025":{"added":5212,"commits":129,"removed":2473},"2026":{"added":20266,"commits":67,"removed":3475}},"build-ci":{"2018":{"added":6,"commits":6,"removed":6},"2019":{"added":12,"commits":12,"removed":12},"2022":{"added":3,"commits":3,"removed":3},"2023":{"added":3,"commits":3,"removed":3},"2024":{"added":9,"commits":9,"removed":9},"2025":{"added":19,"commits":19,"removed":19},"2026":{"added":4365,"commits":12,"removed":57}},"auth-service":{"2019":{"added":0,"commits":3,"removed":3}},"compute-engine":{"2018":{"added":55,"commits":8,"removed":45},"2019":{"added":3188,"commits":23,"removed":818},"2020":{"added":206,"commits":5,"removed":82},"2021":{"added":144,"commits":13,"removed":134},"2022":{"added":1349,"commits":23,"removed":180},"2023":{"added":3488,"commits":70,"removed":1910},"2024":{"added":2623,"commits":97,"removed":993},"2025":{"added":3248,"commits":173,"removed":1942},"2026":{"added":3928,"commits":27,"removed":1086}},"resource-discovery":{"2018":{"added":262,"commits":16,"removed":80},"2019":{"added":6,"commits":4,"removed":26},"2020":{"added":30,"commits":3,"removed":15},"2021":{"added":251,"commits":23,"removed":94},"2022":{"added":418,"commits":30,"removed":344},"2023":{"added":53,"commits":8,"removed":40},"2024":{"added":1,"commits":3,"removed":15},"2025":{"added":32,"commits":8,"removed":35},"2026":{"added":0,"commits":1,"removed":2}},"func-tests":{"2017":{"added":38,"commits":1,"removed":10},"2018":{"added":222,"commits":1,"removed":0}},"image-service":{"2018":{"added":42,"commits":3,"removed":21},"2019":{"added":24,"commits":3,"removed":3},"2022":{"added":42,"commits":18,"removed":18},"2023":{"added":90,"commits":6,"removed":36},"2024":{"added":36,"commits":4,"removed":36},"2025":{"added":10,"commits":4,"removed":10},"2026":{"added":38,"commits":10,"removed":18}},"installer":{"2019":{"added":90,"commits":2,"removed":10},"2021":{"added":24,"commits":10,"removed":10},"2022":{"added":62,"commits":4,"removed":8},"2023":{"added":16,"commits":2,"removed":7},"2024":{"added":9,"commits":2,"removed":2}},"monitoring":{"2019":{"added":219,"commits":9,"removed":57},"2020":{"added":105,"commits":9,"removed":69},"2022":{"added":27,"commits":3,"removed":0},"2024":{"added":68,"commits":8,"removed":58}},"nova-powervm-es":{"2018":{"added":30,"commits":1,"removed":0}},"multinode-ops":{"2021":{"added":2326,"commits":33,"removed":691},"2022":{"added":191,"commits":5,"removed":30},"2025":{"added":10,"commits":2,"removed":4}},"reliability":{"2018":{"added":6,"commits":3,"removed":3},"2019":{"added":9,"commits":6,"removed":6}},"security-ext":{"2021":{"added":16,"commits":4,"removed":16}},"svt-suite":{"2018":{"added":538,"commits":2,"removed":584},"2023":{"added":1404,"commits":6,"removed":960},"2024":{"added":4,"commits":2,"removed":2}},"ttv-suite":{"2018":{"added":4,"commits":2,"removed":4}},"frontend":{"2020":{"added":0,"commits":1,"removed":0},"2021":{"added":17,"commits":2,"removed":15}}};

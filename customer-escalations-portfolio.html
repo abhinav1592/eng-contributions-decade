@@ -56,9 +56,25 @@
   .mib{margin-top:10px;font-size:11px;opacity:.6;}
   .back-link { display: inline-block; font-size: 12px; color: var(--muted); text-decoration: none; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); margin-bottom: 20px; }
   .back-link:hover { background: var(--border); color: var(--text); }
+
+  html[data-theme="dark"] {
+    --bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;
+    --accent:#58a6ff;--accent2:#a78bfa;--green:#3fb950;--red:#f85149;--orange:#e3b341;
+    --yellow:#d4a018;--total-bg:#1c2333;--card-border:#21262d;
+  }
+  html[data-theme="dark"] .tag-storage{background:#3a0d0d;color:#f85149;}
+  html[data-theme="dark"] .tag-compute{background:#0d2318;color:#56d364;}
+  html[data-theme="dark"] .tag-network{background:#0d2137;color:#79c0ff;}
+  html[data-theme="dark"] .tag-perf{background:#231900;color:#e3b341;}
+  html[data-theme="dark"] .tag-image{background:#1a0f3a;color:#c084fc;}
+  html[data-theme="dark"] .tag-dbcheck{background:#0d2318;color:#56d364;}
+  html[data-theme="dark"] table thead tr{background:var(--surface);}
+  #theme-toggle{position:fixed;top:16px;right:20px;z-index:100;padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-size:12px;cursor:pointer;transition:background .15s;}
+  #theme-toggle:hover{background:var(--border);}
 </style>
 </head>
 <body>
+<button id="theme-toggle">🌙 Dark</button>
 <div class="wrapper">
 
   <a href="index.html" class="back-link">← Home</a>
@@ -519,5 +535,22 @@
   </div>
 
 </div>
+<script>
+(function(){
+  var root=document.documentElement;
+  var btn=document.getElementById("theme-toggle");
+  var stored=localStorage.getItem("git-escalations-theme");
+  var initial=stored||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+  function apply(t){
+    if(t==="dark"){root.setAttribute("data-theme","dark");btn.textContent="☀️ Light";}
+    else{root.removeAttribute("data-theme");btn.textContent="🌙 Dark";}
+  }
+  apply(initial);
+  btn.addEventListener("click",function(){
+    var next=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    apply(next);localStorage.setItem("git-escalations-theme",next);
+  });
+})();
+</script>
 </body>
 </html>
