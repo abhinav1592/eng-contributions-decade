@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Developer — Personal Repos · Git Contributions</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f8fa;
+    --border: #e5e7eb;
+    --text: #1f2328;
+    --muted: #57606a;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --blue: #3b82d4;
+    --total-bg: #f0f3ff;
+    --hm-empty: #ebedf0;
+    --hm-l1: #9be9a8;
+    --hm-l2: #40c463;
+    --hm-l3: #30a14e;
+    --hm-l4: #216e39;
+  }
+  html[data-theme="dark"] {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --green: #3fb950;
+    --red: #f85149;
+    --blue: #58a6ff;
+    --total-bg: #1c2333;
+    --hm-empty: #161b22;
+    --hm-l1: #0e4429;
+    --hm-l2: #006d32;
+    --hm-l3: #26a641;
+    --hm-l4: #39d353;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; background: var(--bg); color: var(--text); transition: background .15s, color .15s; }
+  .wrapper { max-width: 980px; margin: 0 auto; padding: 32px 20px 56px; }
+  .page-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .theme-toggle-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap; transition: background .15s, border-color .15s; }
+  .theme-toggle-btn:hover { background: var(--border); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; }
+  .card-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+  .card-value { font-size: 24px; font-weight: 700; }
+  .card-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .green { color: var(--green); } .red { color: var(--red); }
+  .section-title { font-size: 15px; font-weight: 600; margin: 28px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  .tbl-wrap { overflow-x: auto; margin-bottom: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface); border-bottom: 2px solid var(--border); padding: 7px 10px; text-align: right; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { border-bottom: 1px solid var(--border); padding: 6px 10px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td:first-child { text-align: left; font-weight: 500; }
+  tr:hover td { background: var(--surface); }
+  tr.total-row td { font-weight: 700; background: var(--total-bg); }
+  .net-pos { color: var(--green); } .net-neg { color: var(--red); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tab-btn { padding: 5px 12px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--text); cursor: pointer; font-size: 12px; transition: background .1s; }
+  .tab-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .tab-btn:hover:not(.active) { background: var(--border); }
+  .chart-wrap { margin-bottom: 32px; }
+  .chart-row { display: flex; align-items: center; margin-bottom: 5px; gap: 8px; }
+  .chart-label { width: 160px; font-size: 12px; text-align: right; color: var(--muted); flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chart-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .bar-track { height: 8px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .bar-fill-add  { height: 100%; background: var(--green); border-radius: 3px; }
+  .bar-fill-rem  { height: 100%; background: var(--red); border-radius: 3px; }
+  .bar-fill-cmt  { height: 100%; background: var(--blue); border-radius: 3px; }
+  .chart-val { font-size: 11px; color: var(--muted); min-width: 60px; }
+  .chart-legend { display: flex; gap: 16px; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+  .heatmap-outer { margin-bottom: 8px; }
+  .heatmap-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 12px; flex-wrap: wrap; }
+  .heatmap-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .heatmap-year-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  .heatmap-year-btn { padding: 3px 10px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--muted); cursor: pointer; font-size: 11px; }
+  .heatmap-year-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .heatmap-year-btn:hover:not(.active) { background: var(--border); }
+  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
+  .heatmap-grid { display: inline-flex; gap: 0; }
+  .heatmap-dow-labels { display: flex; flex-direction: column; gap: 0; margin-right: 4px; padding-top: 18px; }
+  .heatmap-dow-label { height: 11px; font-size: 9px; color: var(--muted); text-align: right; line-height: 11px; margin-bottom: 2px; width: 22px; }
+  .heatmap-weeks { display: flex; gap: 2px; }
+  .heatmap-week { display: flex; flex-direction: column; gap: 2px; }
+  .heatmap-month-label { font-size: 9px; color: var(--muted); height: 18px; line-height: 18px; width: 11px; text-align: center; }
+  .heatmap-cell { width: 11px; height: 11px; border-radius: 2px; background: var(--hm-empty); cursor: default; }
+  .heatmap-cell[title]:hover { outline: 1px solid var(--muted); }
+  .heatmap-cell.l1 { background: var(--hm-l1); } .heatmap-cell.l2 { background: var(--hm-l2); }
+  .heatmap-cell.l3 { background: var(--hm-l3); } .heatmap-cell.l4 { background: var(--hm-l4); }
+  .heatmap-foot { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); margin-top: 6px; }
+  .heatmap-foot-legend { display: flex; gap: 2px; align-items: center; }
+  .heatmap-foot-cell { width: 11px; height: 11px; border-radius: 2px; }
+  footer { text-align: center; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="page-header">
+    <div>
+      <h1>Developer — Personal Repos · Git Contributions</h1>
+      <p class="subtitle">Commits &middot; Lines Added &middot; Lines Removed &middot; per year &amp; per repository &nbsp;|&nbsp; [identity redacted] &nbsp;|&nbsp; 11 personal repos &nbsp;|&nbsp; Generated: 20 Aug 2026</p>
+    </div>
+    <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle dark/light mode">🌙 Dark</button>
+  </div>
+  <div id="summary-cards" class="cards"></div>
+  <div class="section-title">Combined Heatmap — Daily Activity Across All Repositories</div>
+  <div class="heatmap-outer">
+    <div class="heatmap-header"><div class="heatmap-title" id="ch-title"></div><div class="heatmap-year-nav" id="ch-year-nav"></div></div>
+    <div class="heatmap-scroll"><div class="heatmap-grid" id="ch-grid"></div></div>
+    <div class="heatmap-foot">Less<div class="heatmap-foot-legend"><div class="heatmap-foot-cell" style="background:#ebedf0"></div><div class="heatmap-foot-cell heatmap-cell l1"></div><div class="heatmap-foot-cell heatmap-cell l2"></div><div class="heatmap-foot-cell heatmap-cell l3"></div><div class="heatmap-foot-cell heatmap-cell l4"></div></div>More</div>
+  </div>
+  <div class="section-title">Contributions by Year — All Repos Combined</div>
+  <div class="tbl-wrap"><table id="yearly-table"></table></div>
+  <div class="section-title">Contributions by Repository — All-Time Totals</div>
+  <div class="chart-wrap">
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#3b82d4"></span>Commits</span>
+      <span><span class="legend-dot" style="background:#1a7f37"></span>Lines Added</span>
+      <span><span class="legend-dot" style="background:#cf222e"></span>Lines Removed</span>
+    </div>
+    <div id="repo-chart"></div>
+  </div>
+  <div class="tbl-wrap"><table id="repo-table"></table></div>
+  <div class="section-title">Per-Repository Year-by-Year Breakdown</div>
+  <div class="tabs" id="repo-tabs"></div>
+  <div class="tbl-wrap"><table id="repo-detail-table"></table></div>
+  <div class="section-title">Heatmap — Daily Activity per Repository</div>
+  <div class="tabs" id="hm-repo-tabs"></div>
+  <div class="heatmap-outer">
+    <div class="heatmap-header"><div class="heatmap-title" id="hm-title"></div><div class="heatmap-year-nav" id="hm-year-nav"></div></div>
+    <div class="heatmap-scroll"><div class="heatmap-grid" id="hm-grid"></div></div>
+    <div class="heatmap-foot">Less<div class="heatmap-foot-legend"><div class="heatmap-foot-cell" style="background:#ebedf0"></div><div class="heatmap-foot-cell heatmap-cell l1"></div><div class="heatmap-foot-cell heatmap-cell l2"></div><div class="heatmap-foot-cell heatmap-cell l3"></div><div class="heatmap-foot-cell heatmap-cell l4"></div></div>More</div>
+  </div>
+</div>
+<script>
+const genDateEl = document.getElementById("gen-date"); if (genDateEl) genDateEl.textContent = new Date().toLocaleDateString("en-US",{day:"numeric",month:"long",year:"numeric"});
+(function(){
+  const root=document.documentElement;
+  const btn=document.getElementById("theme-toggle");
+  const stored=localStorage.getItem("git-personal-anon-theme");
+  const initial=stored||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+  function apply(theme){
+    if(theme==="dark"){root.setAttribute("data-theme","dark");btn.textContent="☀️ Light";}
+    else{root.removeAttribute("data-theme");btn.textContent="🌙 Dark";}
+  }
+  apply(initial);
+  btn.addEventListener("click",()=>{
+    const isDark=root.getAttribute("data-theme")==="dark";
+    const next=isDark?"light":"dark";
+    apply(next);
+    localStorage.setItem("git-personal-anon-theme",next);
+  });
+})();
+const DATA={"personal-image-node-design":{"2026":{"commits":19,"added":40757,"removed":65}},"personal-bulk-attach-design":{"2026":{"commits":6,"added":35691,"removed":0}},"personal-api-explorer":{"2026":{"commits":8,"added":20081,"removed":4}},"personal-useful-scripts":{"2023":{"commits":4,"added":146,"removed":1},"2024":{"commits":1,"added":1,"removed":1},"2026":{"commits":20,"added":19464,"removed":10}},"personal-powervs-support":{"2026":{"commits":4,"added":7097,"removed":5}},"personal-backup-planner":{"2026":{"commits":6,"added":6594,"removed":1497}},"personal-backup-analysis":{"2026":{"commits":2,"added":4316,"removed":2}},"personal-issue-tracker":{"2026":{"commits":4,"added":1233,"removed":1}},"personal-rhsm-tool":{"2021":{"commits":1,"added":1117,"removed":0}},"personal-ut-runner":{"2026":{"commits":1,"added":2,"removed":0}},"personal-cloudinit-fork":{"2019":{"commits":1,"added":1,"removed":0}}};
+const DAY_DATA={"personal-image-node-design":{"2026-03-10":3,"2026-03-11":6,"2026-03-17":1,"2026-05-15":7,"2026-06-18":1,"2026-06-19":1},"personal-bulk-attach-design":{"2026-05-21":4,"2026-05-26":1,"2026-06-05":1},"personal-api-explorer":{"2026-03-01":7,"2026-03-02":1},"personal-useful-scripts":{"2023-07-20":3,"2023-08-08":1,"2024-05-20":1,"2026-04-15":1,"2026-05-07":1,"2026-05-19":1,"2026-06-11":4,"2026-06-25":1,"2026-08-13":11,"2026-08-14":1},"personal-powervs-support":{"2026-07-17":4},"personal-backup-planner":{"2026-02-23":6},"personal-backup-analysis":{"2026-04-11":2},"personal-issue-tracker":{"2026-05-15":3,"2026-05-20":1},"personal-rhsm-tool":{"2021-11-08":1},"personal-ut-runner":{"2026-03-28":1},"personal-cloudinit-fork":{"2019-01-14":1}};
+const TOTAL_REPOS=11;
+
+const fmt=n=>n.toLocaleString();
+const repos=Object.keys(DATA);
+const allYearsSet=new Set();
+repos.forEach(r=>Object.keys(DATA[r]).forEach(y=>allYearsSet.add(+y)));
+const allYears=[...allYearsSet].sort((a,b)=>a-b);
+let gC=0,gA=0,gR=0;
+repos.forEach(r=>Object.values(DATA[r]).forEach(d=>{gC+=d.commits;gA+=d.added;gR+=d.removed;}));
+const activeYearsSet=new Set();
+repos.forEach(r=>Object.entries(DATA[r]).forEach(([y,d])=>{if(d.commits>0)activeYearsSet.add(+y);}));
+const activeYears=[...activeYearsSet].sort((a,b)=>a-b);
+const repoTotals={};
+repos.forEach(r=>{repoTotals[r]={commits:0,added:0,removed:0};Object.values(DATA[r]).forEach(d=>{repoTotals[r].commits+=d.commits;repoTotals[r].added+=d.added;repoTotals[r].removed+=d.removed;});});
+const activeRepos=repos.filter(r=>repoTotals[r].commits>0).sort((a,b)=>repoTotals[b].commits-repoTotals[a].commits);
+const cards=[
+  {label:"Total Commits",value:fmt(gC),sub:"across all repos"},
+  {label:"Lines Added",value:fmt(gA),sub:"all repos",cls:"green"},
+  {label:"Lines Removed",value:fmt(gR),sub:"all repos",cls:"red"},
+  {label:"Net Lines",value:(gA-gR>=0?"+":"")+fmt(gA-gR),sub:"added minus removed",cls:gA>=gR?"green":"red"},
+  {label:"Repos Touched",value:activeRepos.length,sub:"of "+TOTAL_REPOS+" personal repos"},
+  {label:"Active Since",value:activeYears[0],sub:"through "+activeYears[activeYears.length-1]}
+];
+const cardEl=document.getElementById("summary-cards");
+cards.forEach(c=>{const d=document.createElement("div");d.className="card";d.innerHTML=`<div class="card-label">${c.label}</div><div class="card-value ${c.cls||''}">${c.value}</div><div class="card-sub">${c.sub}</div>`;cardEl.appendChild(d);});
+const yearlyTotals={};
+allYears.forEach(y=>{yearlyTotals[y]={commits:0,added:0,removed:0};});
+repos.forEach(r=>Object.entries(DATA[r]).forEach(([y,d])=>{yearlyTotals[+y].commits+=d.commits;yearlyTotals[+y].added+=d.added;yearlyTotals[+y].removed+=d.removed;}));
+const ytbl=document.getElementById("yearly-table");
+let h=`<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>Repos Active</th></tr></thead><tbody>`;
+allYears.forEach(y=>{const d=yearlyTotals[y];if(!d.commits)return;const net=d.added-d.removed;const rc=repos.filter(r=>DATA[r][y]&&DATA[r][y].commits>0).length;h+=`<tr><td>${y}</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td><td>${rc}</td></tr>`;});
+h+=`<tr class="total-row"><td>All Years</td><td>${fmt(gC)}</td><td class="green">${fmt(gA)}</td><td class="red">${fmt(gR)}</td><td class="${gA>=gR?'net-pos':'net-neg'}">${gA>=gR?"+":""}${fmt(gA-gR)}</td><td>${activeRepos.length}</td></tr>`;
+ytbl.innerHTML=h+"</tbody>";
+const PERSONAL_REPOS=new Set(repos);
+const rtbl=document.getElementById("repo-table");
+h=`<thead><tr><th>Repository</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th><th>First Year</th><th>Last Year</th></tr></thead><tbody>`;
+activeRepos.forEach(r=>{const d=repoTotals[r];const yrs=Object.keys(DATA[r]).map(Number).filter(y=>DATA[r][y].commits>0).sort();const net=d.added-d.removed;h+=`<tr><td>${r}`+(PERSONAL_REPOS.has(r)?` <span style="font-size:9px;background:#eff6ff;color:#1d4ed8;padding:1px 5px;border-radius:3px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;vertical-align:middle">personal</span>`:``)+`</td><td>${fmt(d.commits)}</td><td class="green">${fmt(d.added)}</td><td class="red">${fmt(d.removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td><td>${yrs[0]}</td><td>${yrs[yrs.length-1]}</td></tr>`;});
+rtbl.innerHTML=h+"</tbody>";
+const chartEl=document.getElementById("repo-chart");
+const mC=Math.max(...activeRepos.map(r=>repoTotals[r].commits));
+const mA=Math.max(...activeRepos.map(r=>repoTotals[r].added));
+const mR2=Math.max(...activeRepos.map(r=>repoTotals[r].removed));
+activeRepos.forEach(r=>{const d=repoTotals[r];const wC=Math.max(1,(d.commits/mC)*100).toFixed(1);const wA=Math.max(1,(d.added/mA)*100).toFixed(1);const wR=Math.max(1,(d.removed/mR2)*100).toFixed(1);chartEl.innerHTML+=`<div class="chart-row"><div class="chart-label" title="${r}">${r}</div><div class="chart-bars"><div class="bar-track"><div class="bar-fill-cmt" style="width:${wC}%"></div></div><div class="bar-track"><div class="bar-fill-add" style="width:${wA}%"></div></div><div class="bar-track"><div class="bar-fill-rem" style="width:${wR}%"></div></div></div><div class="chart-val">${fmt(d.commits)} cmts</div></div>`;});
+const tabsEl=document.getElementById("repo-tabs");
+const detailEl=document.getElementById("repo-detail-table");
+let activeRepo=activeRepos[0];
+function renderDetail(repo){const d=DATA[repo];const yrs=Object.keys(d).map(Number).sort();let h2=`<thead><tr><th>Year</th><th>Commits</th><th>Lines Added</th><th>Lines Removed</th><th>Net Change</th></tr></thead><tbody>`;let tc=0,ta=0,tr2=0;yrs.forEach(y=>{if(!d[y].commits&&!d[y].added)return;const net=d[y].added-d[y].removed;tc+=d[y].commits;ta+=d[y].added;tr2+=d[y].removed;h2+=`<tr><td>${y}</td><td>${fmt(d[y].commits)}</td><td class="green">${fmt(d[y].added)}</td><td class="red">${fmt(d[y].removed)}</td><td class="${net>=0?'net-pos':'net-neg'}">${net>=0?"+":""}${fmt(net)}</td></tr>`;});const tn=ta-tr2;h2+=`<tr class="total-row"><td>Total</td><td>${fmt(tc)}</td><td class="green">${fmt(ta)}</td><td class="red">${fmt(tr2)}</td><td class="${tn>=0?'net-pos':'net-neg'}">${tn>=0?"+":""}${fmt(tn)}</td></tr>`;detailEl.innerHTML=h2+"</tbody>";}
+activeRepos.forEach(repo=>{const btn=document.createElement("button");btn.className="tab-btn"+(repo===activeRepo?" active":"");btn.textContent=repo;btn.addEventListener("click",()=>{document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");activeRepo=repo;renderDetail(repo);});tabsEl.appendChild(btn);});
+renderDetail(activeRepo);
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DOW_LABELS=["","Mon","","Wed","","Fri",""];
+function yearsFromMap(m){const s=new Set(Object.keys(m).map(d=>+d.slice(0,4)));return[...s].sort((a,b)=>b-a);}
+function maxForYear(m,y){let v=0;const p=y+"-";for(const[d,c]of Object.entries(m))if(d.startsWith(p))v=Math.max(v,c);return v||1;}
+function lvl(c,mx){if(!c)return"";const p=c/mx;return p<=0.25?"l1":p<=0.5?"l2":p<=0.75?"l3":"l4";}
+function renderGrid(dayMap,year,gridId,titleId,label,totalOverride=null){
+  const mx=maxForYear(dayMap,year);const p=year+"-";
+  let tot=0;for(const[d,c]of Object.entries(dayMap))if(d.startsWith(p))tot+=c;
+  if(totalOverride!==null)tot=totalOverride;
+  document.getElementById(titleId).textContent=tot+" commit"+(tot!==1?"s":"")+" in "+year+" · "+label;
+  const jan1=new Date(year,0,1);const sd=jan1.getDay();const gs=new Date(jan1);gs.setDate(gs.getDate()-sd);
+  const gEl=document.getElementById(gridId);gEl.innerHTML="";
+  const dc=document.createElement("div");dc.className="heatmap-dow-labels";
+  DOW_LABELS.forEach(l=>{const e=document.createElement("div");e.className="heatmap-dow-label";e.textContent=l;dc.appendChild(e);});
+  gEl.appendChild(dc);
+  const we=document.createElement("div");we.className="heatmap-weeks";
+  const sm={};
+  for(let w=0;w<53;w++){
+    const wk=document.createElement("div");wk.className="heatmap-week";
+    const ml=document.createElement("div");ml.className="heatmap-month-label";
+    const fd=new Date(gs);fd.setDate(gs.getDate()+w*7);
+    const mo=fd.getMonth(),yr=fd.getFullYear();
+    if(yr===year&&!sm[mo]){sm[mo]=true;ml.textContent=MONTHS[mo];}
+    wk.appendChild(ml);
+    for(let d=0;d<7;d++){
+      const dt=new Date(gs);dt.setDate(gs.getDate()+w*7+d);
+      const cell=document.createElement("div");cell.className="heatmap-cell";
+      if(dt.getFullYear()===year){
+        const iso=dt.toISOString().slice(0,10);const cnt=dayMap[iso]||0;
+        const lv=lvl(cnt,mx);if(lv)cell.classList.add(lv);
+        if(cnt){const lab=dt.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});cell.title=lab+": "+cnt+" commit"+(cnt>1?"s":"");}
+      }else{cell.style.opacity="0";cell.style.pointerEvents="none";}
+      wk.appendChild(cell);
+    }
+    we.appendChild(wk);
+  }
+  gEl.appendChild(we);
+}
+// Combined heatmap
+const combMap={};
+Object.values(DAY_DATA).forEach(rm=>Object.entries(rm).forEach(([d,c])=>{combMap[d]=(combMap[d]||0)+c;}));
+const combYears=allYears.filter(y=>yearlyTotals[y]&&yearlyTotals[y].commits>0);
+let aCY=combYears[combYears.length-1];
+function renderCHNav(){
+  const nav=document.getElementById("ch-year-nav");nav.innerHTML="";
+  combYears.forEach(y=>{const btn=document.createElement("button");btn.className="heatmap-year-btn"+(y===aCY?" active":"");btn.textContent=y;
+    btn.addEventListener("click",()=>{aCY=y;document.querySelectorAll("#ch-year-nav .heatmap-year-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderGrid(combMap,aCY,"ch-grid","ch-title","all repos",yearlyTotals[aCY].commits);});
+    nav.appendChild(btn);});
+}
+renderCHNav();renderGrid(combMap,aCY,"ch-grid","ch-title","all repos",yearlyTotals[aCY].commits);
+// Per-repo heatmap
+const hmRepos=activeRepos.filter(r=>DAY_DATA[r]&&Object.keys(DAY_DATA[r]).length>0);
+const hmTabsEl=document.getElementById("hm-repo-tabs");
+let aHR=hmRepos[0];let aHY=aHR?yearsFromMap(DAY_DATA[aHR])[0]:null;
+function renderHMNav(yrs){const nav=document.getElementById("hm-year-nav");nav.innerHTML="";yrs.forEach(y=>{const btn=document.createElement("button");btn.className="heatmap-year-btn"+(y===aHY?" active":"");btn.textContent=y;btn.addEventListener("click",()=>{aHY=y;document.querySelectorAll("#hm-year-nav .heatmap-year-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderGrid(DAY_DATA[aHR],aHY,"hm-grid","hm-title",aHR);});nav.appendChild(btn);});}
+function setHMRepo(r){aHR=r;const yrs=yearsFromMap(DAY_DATA[r]);aHY=yrs[0];renderHMNav(yrs);renderGrid(DAY_DATA[aHR],aHY,"hm-grid","hm-title",aHR);}
+hmRepos.forEach(repo=>{const btn=document.createElement("button");btn.className="tab-btn"+(repo===aHR?" active":"");btn.textContent=repo;btn.addEventListener("click",()=>{document.querySelectorAll("#hm-repo-tabs .tab-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");setHMRepo(repo);});hmTabsEl.appendChild(btn);});
+if(aHR){renderHMNav(yearsFromMap(DAY_DATA[aHR]));renderGrid(DAY_DATA[aHR],aHY,"hm-grid","hm-title",aHR);}
+</script>
+<footer>Developer &middot; Personal Engineering Projects</footer>
+</body>
+</html>
