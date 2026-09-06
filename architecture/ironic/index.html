@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenStack Ironic — End-to-End System Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fa; --panel:#ffffff; --panel-2:#f1f3f7; --line:#e2e6ee;
+  --fg:#11161f; --muted:#5a6478; --dim:#8b95a8;
+  --accent:#0e7490; --accent-2:#7c3aed; --ok:#047857; --warn:#b45309;
+  --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  --sidebar-w:288px;
+}
+:root:not([data-theme="light"]){ }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b0e14; --panel:#111722; --panel-2:#161d2b; --line:#232c3d;
+    --fg:#e8edf7; --muted:#9aa6bd; --dim:#6c7891;
+    --accent:#22d3ee; --accent-2:#a78bfa; --ok:#34d399; --warn:#fbbf24;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b0e14; --panel:#111722; --panel-2:#161d2b; --line:#232c3d;
+  --fg:#e8edf7; --muted:#9aa6bd; --dim:#6c7891;
+  --accent:#22d3ee; --accent-2:#a78bfa; --ok:#34d399; --warn:#fbbf24;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+code,kbd,.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* ---------- layout ---------- */
+.shell{display:flex; min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w); flex:0 0 var(--sidebar-w);
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--panel); border-right:1px solid var(--line);
+  transition:width .22s ease, flex-basis .22s ease;
+  display:flex; flex-direction:column;
+}
+.sb-nav{flex:1 0 auto}
+body.collapsed .sidebar{width:64px; flex-basis:64px}
+.main{flex:1; min-width:0; padding:0 clamp(20px,4vw,56px) 96px}
+
+/* ---------- sidebar ---------- */
+.sb-head{
+  display:flex; align-items:center; gap:10px;
+  padding:18px 16px; border-bottom:1px solid var(--line);
+  position:sticky; top:0; background:var(--panel); z-index:5;
+}
+.sb-toggle{
+  flex:0 0 32px; width:32px; height:32px; display:grid; place-items:center;
+  border:1px solid var(--line); border-radius:8px; background:var(--panel-2);
+  color:var(--muted); cursor:pointer; transition:.15s;
+}
+.sb-toggle:hover{color:var(--fg); border-color:var(--accent)}
+.sb-title{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); white-space:nowrap}
+body.collapsed .sb-title,body.collapsed .sb-group-label,body.collapsed .nav-txt,body.collapsed .sb-foot{display:none}
+body.collapsed .nav-a{justify-content:center; padding:10px 0}
+
+.sb-nav{padding:14px 10px}
+.sb-group-label{
+  font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--dim); padding:14px 10px 6px;
+}
+.nav-a{
+  display:flex; align-items:center; gap:10px; text-decoration:none;
+  color:var(--muted); padding:8px 10px; border-radius:8px; font-size:13.5px;
+  border:1px solid transparent; transition:.14s;
+}
+.nav-a:hover{background:var(--panel-2); color:var(--fg)}
+.nav-a.active{background:var(--panel-2); color:var(--fg); border-color:var(--line)}
+.nav-a.active .nav-n{background:var(--accent); color:var(--bg); border-color:transparent}
+.nav-n{
+  flex:0 0 24px; width:24px; height:24px; display:grid; place-items:center;
+  border:1px solid var(--line); border-radius:6px;
+  font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; color:var(--dim);
+}
+.nav-txt{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.sb-foot{padding:14px 18px 28px; font-size:11.5px; color:var(--dim); border-top:1px solid var(--line); margin-top:12px}
+.sb-foot a{color:var(--accent); text-decoration:none}
+
+/* ---------- header ---------- */
+.top{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:22px 0 0;
+}
+.theme-btn{
+  border:1px solid var(--line); background:var(--panel); color:var(--muted);
+  border-radius:8px; padding:7px 12px; font-size:12.5px; cursor:pointer; transition:.15s;
+}
+.theme-btn:hover{color:var(--fg); border-color:var(--accent)}
+
+.hero{padding:26px 0 8px; max-width:820px}
+.eyebrow{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); font-weight:600;
+}
+h1{font-size:clamp(28px,3.6vw,42px); line-height:1.15; margin:12px 0 14px; letter-spacing:-.02em}
+.lede{font-size:17px; color:var(--muted); margin:0 0 18px}
+.meta-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px}
+.chip{
+  font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--muted);
+  border:1px solid var(--line); background:var(--panel); border-radius:999px; padding:5px 11px;
+}
+.chip b{color:var(--fg); font-weight:600}
+
+.callout{
+  margin:28px 0 8px; padding:16px 18px; border-radius:12px;
+  border:1px solid var(--line); border-left:3px solid var(--accent-2);
+  background:var(--panel); box-shadow:var(--shadow); max-width:820px;
+}
+.callout h3{margin:0 0 6px; font-size:14px}
+.callout p{margin:0; color:var(--muted); font-size:14px}
+.callout .path{font-family:"JetBrains Mono",monospace; color:var(--fg); font-weight:600}
+
+/* ---------- sections ---------- */
+.group-h{
+  margin:56px 0 4px; font-size:11px; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--dim);
+}
+.card{
+  background:var(--panel); border:1px solid var(--line); border-radius:14px;
+  padding:24px 26px; margin:18px 0; box-shadow:var(--shadow); scroll-margin-top:20px;
+}
+.card-h{display:flex; align-items:flex-start; gap:14px; margin-bottom:6px}
+.num{
+  flex:0 0 38px; width:38px; height:38px; display:grid; place-items:center;
+  border-radius:10px; background:var(--panel-2); border:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace; font-weight:700; font-size:14px; color:var(--accent);
+}
+.card h2{margin:0; font-size:20px; letter-spacing:-.01em}
+.kind{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; color:var(--dim);
+  text-transform:uppercase; letter-spacing:.1em; margin-top:3px;
+}
+.model{color:var(--muted); margin:12px 0 0}
+.learn{margin:14px 0 0; padding-left:18px; color:var(--muted)}
+.learn li{margin:5px 0}
+.learn b{color:var(--fg); font-weight:600}
+.gotcha{
+  margin-top:16px; padding:12px 14px; border-radius:10px;
+  background:var(--panel-2); border:1px solid var(--line); font-size:13.5px; color:var(--muted);
+}
+.gotcha b{color:var(--warn)}
+.actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px}
+.open{
+  display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+  background:var(--accent); color:var(--bg); font-weight:600; font-size:13.5px;
+  padding:9px 16px; border-radius:9px; transition:.15s;
+}
+.open:hover{filter:brightness(1.1); transform:translateY(-1px)}
+.stories{font-size:12px; color:var(--dim); font-family:"JetBrains Mono",monospace}
+
+.keys{margin-top:10px; display:flex; flex-wrap:wrap; gap:6px}
+.key{
+  font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--muted);
+  border:1px solid var(--line); border-bottom-width:2px; background:var(--panel-2);
+  border-radius:6px; padding:3px 7px;
+}
+footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); color:var(--dim); font-size:12.5px; max-width:820px}
+footer code{color:var(--muted)}
+
+@media (max-width:860px){
+  .sidebar{position:fixed; z-index:40; transform:translateX(0); box-shadow:var(--shadow)}
+  body.collapsed .sidebar{transform:translateX(-100%); width:var(--sidebar-w); flex-basis:var(--sidebar-w)}
+  .main{padding-left:20px}
+  body:not(.collapsed) .main{filter:blur(1px)}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <button class="sb-toggle" id="toggle" aria-label="Toggle sidebar" title="Toggle sidebar (\)">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="1.5" y="2.5" width="13" height="11" rx="2"/><line x1="6" y1="2.5" x2="6" y2="13.5"/>
+        </svg>
+      </button>
+      <span class="sb-title">Ironic Map</span>
+    </div>
+    <nav class="sb-nav" id="nav"></nav>
+    <div class="sb-foot">
+      8 diagrams · pinned to<br>
+      <a href="https://github.com/openstack/ironic/tree/26c022f1353e40f36456905620e8c1aca8cf1a31" target="_blank" rel="noopener">openstack/ironic@26c022f</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <a class="theme-btn" href="../../index.html" style="text-decoration:none">&#8592; Portfolio</a>
+      <button class="theme-btn" id="theme">◐ Theme</button>
+    </div>
+
+    <header class="hero">
+      <div class="eyebrow">Bare metal provisioning · read in order</div>
+      <h1>OpenStack Ironic, end to end</h1>
+      <p class="lede">
+        Eight explorable diagrams that build one mental model of how Ironic turns a rack of
+        anonymous servers into machines you can ask for by name. Each one is interactive:
+        search, trace a route, and play the guided story chapters.
+      </p>
+      <div class="meta-row">
+        <span class="chip"><b>8</b> diagrams</span>
+        <span class="chip"><b>40</b> guided story chapters</span>
+        <span class="chip">every diagram carries a <b>numbered walkthrough</b></span>
+        <span class="chip">grounded in <b>source</b>, not blog posts</span>
+      </div>
+    </header>
+
+    <div class="callout">
+      <h3>If you only have an hour</h3>
+      <p>Read <span class="path">01 → 02 → 04</span>. That is the shape of the system, the life of a
+      node, and one deploy from request to running OS. Everything else is detail hanging off those three.</p>
+    </div>
+
+    <div class="callout" style="border-left-color:var(--accent)">
+      <h3>Every diagram is explorable</h3>
+      <p>These are not pictures. Inside any diagram:</p>
+      <div class="keys">
+        <span class="key">/ search nodes</span>
+        <span class="key">R route probe</span>
+        <span class="key">M radar</span>
+        <span class="key">L lens</span>
+        <span class="key">F presentation</span>
+        <span class="key">drag to pan · scroll to zoom</span>
+        <span class="key">story chapters ▸</span>
+      </div>
+    </div>
+
+    <div id="sections"></div>
+
+    <footer>
+      Built with the <code>archify</code> skill (v2.17). Every diagram passes showcase validation
+      at <code>9/9</code> checks with 0 errors and 0 warnings. Technical claims are grounded in
+      <code>openstack/ironic</code> at revision <code>26c022f</code> — line citations in
+      <code>notes/</code> were verified against that exact revision.
+    </footer>
+  </main>
+</div>
+
+<script>
+const TOPICS = [
+  { group:"Foundations", items:[
+    { n:"01", file:"01-ironic-architecture.html", title:"System Architecture", kind:"architecture · 18 components",
+      model:"ironic-api writes your intent to a database and hands the work to a conductor. The conductor is the only thing that ever touches hardware. Everything else is bookkeeping.",
+      learn:["The four layers: <b>control plane</b>, <b>conductor layer</b>, <b>hardware interface layer</b>, <b>physical hardware</b>",
+             "How the <b>hash ring</b> gives every node exactly one owning conductor",
+             "Where Nova, Keystone, Glance and Neutron plug in — and why none of them are required"],
+      gotcha:"<b>power_state vs provision_state</b> are two different columns. One answers “is it switched on”, the other “where is it in its life”.",
+      stories:"5 chapters · 11 verified source links" } ]},
+
+  { group:"The core model", items:[
+    { n:"02", file:"02-node-state-machine.html", title:"Node Provision State Machine", kind:"lifecycle · 15 states",
+      model:"A node moves through a small set of stable states, pushed by API verbs you send and pulled by transitions the conductor makes on its own. Knowing which is which is most of the battle.",
+      learn:["The happy rail: <b>enroll → manageable → available → deploying → active</b>",
+             "Which moves are <b>your verbs</b> (manage, provide, deploy, clean) and which are automatic",
+             "Where the <b>wait</b> states sit, and what a node is actually doing inside them"],
+      gotcha:"<b>reservation</b> is not a state. It is the hostname of the conductor currently holding the node's lock.",
+      stories:"5 chapters" },
+    { n:"03", file:"03-hardware-types-interfaces.html", title:"Hardware Types &amp; Interfaces", kind:"architecture · 13 interface families",
+      model:"A hardware type is not a driver. It is a bundle that says: for this class of machine, here are the allowed drivers for each of the thirteen jobs Ironic needs done.",
+      learn:["How <b>ipmi, redfish, idrac</b> compose one driver per interface",
+             "The thirteen families: power, management, boot, deploy, network, storage, inspect, raid, bios, firmware, console, rescue, vendor",
+             "Which calls go <b>out-of-band</b> to the BMC and which go <b>in-band</b> through the agent"],
+      gotcha:"There is <b>no iSCSI deploy interface</b> — it was removed upstream. The real choices are direct, ramdisk, anaconda and friends.",
+      stories:"5 chapters · verified source links" } ]},
+
+  { group:"The operational flows", items:[
+    { n:"04", file:"04-deploy-sequence.html", title:"Deploy — the happy path", kind:"sequence · the one to read twice",
+      model:"A bare machine has no agent, so Ironic boots one over the network first, then uses it to write the disk. That single fact explains the whole choreography.",
+      learn:["Power on → DHCP → iPXE → <b>IPA ramdisk</b> → image write → reboot into the real OS",
+             "Where the <b>heartbeat</b> comes in and why the conductor waits for it",
+             "PXE versus <b>virtual media</b> as the orthogonal boot choice"],
+      gotcha:"Out-of-band and in-band alternate the whole way through. Watch the actor change on every step of the walkthrough.",
+      stories:"5 chapters · 13-step walkthrough" },
+    { n:"05", file:"05-cleaning.html", title:"Cleaning — automated &amp; manual", kind:"workflow",
+      model:"Ironic refuses to hand a dirty machine to the next tenant. Cleaning is the price of admission back into the available pool, and it is why `provide` is not instant.",
+      learn:["How clean steps are <b>collected from every interface</b> and ordered by priority",
+             "In-band steps that need the ramdisk versus out-of-band steps that do not",
+             "<b>clean wait</b>, abort, hold/unhold, and why failure parks the node in maintenance"],
+      gotcha:"Cleaning failing on purpose leaves the node unavailable. That is the feature — a dirty machine is never silently reused.",
+      stories:"5 chapters" },
+    { n:"06", file:"06-enroll-verify-provide.html", title:"Enroll → Verify → Provide", kind:"sequence · onboarding",
+      model:"Onboarding is three questions: do the credentials work, what is this machine, and is it clean enough to hand out. Each question is one verb.",
+      learn:["<b>manage</b> proves the BMC credentials before anything trusts the node",
+             "<b>inspect</b> lets the hardware describe itself instead of you typing it in",
+             "<b>provide</b> declares it fit for service and triggers automated cleaning"],
+      gotcha:"<b>enroll</b> means Ironic has a database row and has never once contacted the machine.",
+      stories:"5 chapters · 12-step walkthrough" } ]},
+
+  { group:"Data and networking", items:[
+    { n:"07", file:"07-data-and-artifacts.html", title:"Images, Config-drive, Inspection Data", kind:"dataflow",
+      model:"Follow the artifacts rather than the control flow: where an image comes from, how it is cached and checksummed, and what data flows back off the machine.",
+      learn:["Image sources: Glance, plain HTTP, OCI registries, local files — and the conductor's cache",
+             "The <b>config-drive</b>: how the new OS learns its hostname, keys and network",
+             "What <b>inspection</b> writes back onto the node and its ports, plus ramdisk logs on failure"],
+      gotcha:"Checksum verification happens as the agent writes, not after. A bad image fails the deploy, not the boot.",
+      stories:"5 chapters" },
+    { n:"08", file:"08-networking-models.html", title:"Networking Models", kind:"architecture · noop · flat · neutron",
+      model:"Three answers to one question: who moves the machine's switch port between the provisioning network and the tenant network. You, nobody, or Neutron.",
+      learn:["<b>noop</b> — you wire it yourself; Ironic touches nothing",
+             "<b>flat</b> — one shared provisioning network, no tenant isolation",
+             "<b>neutron</b> — real port binding and the <b>VLAN flip</b> at the end of a deploy"],
+      gotcha:"The provisioning network, the tenant network and the BMC management network are three separate things. Conflating them is the classic first mistake.",
+      stories:"5 chapters · verified source links" } ]},
+];
+
+/* build sidebar + sections */
+const nav = document.getElementById('nav');
+const sections = document.getElementById('sections');
+for (const g of TOPICS) {
+  const gl = document.createElement('div');
+  gl.className = 'sb-group-label'; gl.textContent = g.group; nav.appendChild(gl);
+
+  const gh = document.createElement('div');
+  gh.className = 'group-h'; gh.textContent = g.group; sections.appendChild(gh);
+
+  for (const t of g.items) {
+    const a = document.createElement('a');
+    a.className = 'nav-a'; a.href = '#s' + t.n; a.dataset.target = 's' + t.n;
+    a.title = t.title;
+    a.innerHTML = `<span class="nav-n">${t.n}</span><span class="nav-txt">${t.title}</span>`;
+    nav.appendChild(a);
+
+    const s = document.createElement('section');
+    s.className = 'card'; s.id = 's' + t.n;
+    s.innerHTML = `
+      <div class="card-h">
+        <div class="num">${t.n}</div>
+        <div><h2>${t.title}</h2><div class="kind">${t.kind}</div></div>
+      </div>
+      <p class="model">${t.model}</p>
+      <ul class="learn">${t.learn.map(x => `<li>${x}</li>`).join('')}</ul>
+      <div class="gotcha">${t.gotcha}</div>
+      <div class="actions">
+        <a class="open" href="${t.file}">Open diagram
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <span class="stories">${t.stories}</span>
+      </div>`;
+    sections.appendChild(s);
+  }
+}
+
+/* sidebar collapse — remembered */
+const body = document.body;
+if (localStorage.getItem('ironic-sb') === 'closed') body.classList.add('collapsed');
+if (window.matchMedia('(max-width:860px)').matches && !localStorage.getItem('ironic-sb')) body.classList.add('collapsed');
+document.getElementById('toggle').addEventListener('click', () => {
+  body.classList.toggle('collapsed');
+  localStorage.setItem('ironic-sb', body.classList.contains('collapsed') ? 'closed' : 'open');
+});
+document.addEventListener('keydown', e => {
+  if (e.key === '\\' && !/input|textarea/i.test(e.target.tagName)) document.getElementById('toggle').click();
+});
+
+/* theme — remembered, defaults to system */
+const themeBtn = document.getElementById('theme');
+const saved = localStorage.getItem('ironic-theme');
+if (saved) document.documentElement.setAttribute('data-theme', saved);
+themeBtn.addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const next = cur ? (cur === 'dark' ? 'light' : 'dark') : (sysDark ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('ironic-theme', next);
+});
+
+/* scroll-spy */
+const links = [...document.querySelectorAll('.nav-a')];
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    links.forEach(l => l.classList.toggle('active', l.dataset.target === en.target.id));
+  });
+}, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+document.querySelectorAll('section.card').forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
