@@ -42,10 +42,28 @@
   .chip-network{border-color:#bbf7d0;color:#15803d;background:#f0fdf4;}
   .chip-platform{border-color:#fed7aa;color:#c2410c;background:#fff7ed;}
 
-  /* ── Portfolio grid ── */
+  /* ── Portfolio list ── */
   .portfolio-section{margin-bottom:36px;}
-  .portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
-  @media(max-width:720px){.portfolio-grid{grid-template-columns:1fr;}}
+  .portfolio-list{display:flex;flex-direction:column;gap:10px;}
+
+  /* Each entry becomes a full-width row: copy on the left, tags parked right. */
+  .portfolio-list .pcard{
+    display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:28px;
+    grid-template-areas:"eyebrow tags" "title tags" "desc tags";
+    padding:16px 44px 16px 20px;
+  }
+  .portfolio-list .pcard-eyebrow{grid-area:eyebrow;margin-bottom:4px;}
+  .portfolio-list .pcard-title{grid-area:title;margin-bottom:4px;}
+  .portfolio-list .pcard-desc{grid-area:desc;margin-bottom:0;}
+  .portfolio-list .pcard-tags{grid-area:tags;align-self:center;justify-content:flex-end;max-width:300px;}
+  .portfolio-list .pcard-arrow{top:50%;transform:translateY(-50%);}
+  .portfolio-list .pcard:hover .pcard-arrow{transform:translateY(-50%) translateX(3px);}
+  @media(max-width:720px){
+    .portfolio-list .pcard{grid-template-columns:1fr;grid-template-areas:"eyebrow" "title" "desc" "tags";}
+    .portfolio-list .pcard-tags{justify-content:flex-start;max-width:none;margin-top:12px;}
+    .portfolio-list .pcard-arrow{top:18px;transform:none;}
+    .portfolio-list .pcard:hover .pcard-arrow{transform:translateX(3px);}
+  }
 
   .pcard{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 24px 20px;transition:border-color .15s,box-shadow .15s;position:relative;}
   .pcard:hover{border-color:var(--accent);box-shadow:0 2px 16px rgba(59,130,212,.09);}
@@ -65,6 +83,25 @@
 
   .pcard-disabled{pointer-events:none;opacity:.55;border-style:dashed;}
   .pcard-disabled .pcard-arrow{display:none;}
+
+  /* ── Architecture writeups: lead card + compact numbered list ── */
+  .pcard-lead{display:block;margin-bottom:10px;padding:22px 44px 20px 24px;}
+  .writeup-list{display:flex;flex-direction:column;gap:1px;background:var(--border);
+    border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .wrow{display:grid;grid-template-columns:34px minmax(0,268px) 82px minmax(0,1fr);
+    align-items:center;column-gap:14px;background:var(--surface);
+    padding:11px 18px;text-decoration:none;color:inherit;transition:background .13s;}
+  .wrow:hover{background:var(--bg);}
+  .wrow:hover .wt{color:var(--accent);}
+  .wn{font-size:11px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .wt{font-size:13px;font-weight:600;color:var(--text);transition:color .13s;}
+  .wk{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);opacity:.75;}
+  .wd{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  @media(max-width:720px){
+    .wrow{grid-template-columns:28px 1fr;row-gap:3px;padding:12px 16px;}
+    .wk,.wd{display:none;}
+  }
 
   /* ── Experience timeline ── */
   .timeline-section{margin-bottom:36px;}
@@ -186,7 +223,7 @@
   <!-- ── PORTFOLIO ── -->
   <div class="portfolio-section">
     <div class="section-label">Portfolio Sections</div>
-    <div class="portfolio-grid">
+    <div class="portfolio-list">
 
       <a href="engineering-contributions-decade.html" class="pcard">
         <span class="pcard-arrow">&#8594;</span>
@@ -252,17 +289,40 @@
         </div>
       </a>
 
-            <div class="pcard pcard-disabled">
-        <div class="pcard-eyebrow">Coming Soon</div>
-        <div class="pcard-title">Feature Design Documents</div>
-        <div class="pcard-desc">
-          Architecture write-ups and exploration..
-        </div>
-        <div class="pcard-tags">
-          <span class="tag tag-gray">In Progress</span>
-        </div>
-      </div>
+    </div>
+  </div>
 
+  <!-- ── ARCHITECTURE WRITEUPS ── -->
+  <div class="portfolio-section">
+    <div class="section-label">Architecture Writeups</div>
+
+    <a href="architecture/ironic/index.html" class="pcard pcard-lead">
+      <span class="pcard-arrow">&#8594;</span>
+      <div class="pcard-eyebrow">OpenStack Ironic &middot; Bare Metal Provisioning</div>
+      <div class="pcard-title">End-to-End System Map &mdash; 8 explorable diagrams</div>
+      <div class="pcard-desc">
+        How Ironic turns a rack of anonymous servers into machines you can ask for by name.
+        Architecture, the node state machine, the deploy path, cleaning, networking and data
+        flow &mdash; each diagram is interactive (search, route probe, guided story chapters)
+        and carries a numbered walkthrough. Grounded in the upstream source at a pinned revision.
+      </div>
+      <div class="pcard-tags">
+        <span class="tag tag-blue">8 Diagrams</span>
+        <span class="tag tag-purple">40 Story Chapters</span>
+        <span class="tag tag-green">Source-Verified</span>
+        <span class="tag tag-orange">Interactive</span>
+      </div>
+    </a>
+
+    <div class="writeup-list">
+      <a class="wrow" href="architecture/ironic/01-ironic-architecture.html"><span class="wn">01</span><span class="wt">System Architecture</span><span class="wk">architecture</span><span class="wd">The four layers, the hash ring, and why only the conductor touches hardware</span></a>
+      <a class="wrow" href="architecture/ironic/02-node-state-machine.html"><span class="wn">02</span><span class="wt">Node Provision State Machine</span><span class="wk">lifecycle</span><span class="wd">enroll &rarr; manageable &rarr; available &rarr; deploying &rarr; active, and the verbs between</span></a>
+      <a class="wrow" href="architecture/ironic/03-hardware-types-interfaces.html"><span class="wn">03</span><span class="wt">Hardware Types &amp; Interfaces</span><span class="wk">architecture</span><span class="wd">How a hardware type composes one driver per interface family</span></a>
+      <a class="wrow" href="architecture/ironic/04-deploy-sequence.html"><span class="wn">04</span><span class="wt">Deploy &mdash; the happy path</span><span class="wk">sequence</span><span class="wd">Power on to running OS, step by step. The one to read twice</span></a>
+      <a class="wrow" href="architecture/ironic/05-cleaning.html"><span class="wn">05</span><span class="wt">Cleaning &mdash; automated &amp; manual</span><span class="wk">workflow</span><span class="wd">Why a dirty machine is never handed to the next tenant</span></a>
+      <a class="wrow" href="architecture/ironic/06-enroll-verify-provide.html"><span class="wn">06</span><span class="wt">Enroll &rarr; Verify &rarr; Provide</span><span class="wk">sequence</span><span class="wd">Onboarding a node: prove the BMC, discover the hardware, clean it</span></a>
+      <a class="wrow" href="architecture/ironic/07-data-and-artifacts.html"><span class="wn">07</span><span class="wt">Images, Config-drive &amp; Inspection</span><span class="wk">dataflow</span><span class="wd">Following the artifacts instead of the control flow</span></a>
+      <a class="wrow" href="architecture/ironic/08-networking-models.html"><span class="wn">08</span><span class="wt">Networking Models</span><span class="wk">architecture</span><span class="wd">noop, flat and neutron &mdash; who moves the switch port, and when</span></a>
     </div>
   </div>
 
